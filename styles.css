@@ -855,7 +855,7 @@ body {
   margin: 32px 0 48px;
   text-wrap: balance;
   color: var(--ink);
-  min-height: 8em;
+  min-height: 6em;
 }
 
 .testimonial-quote em {

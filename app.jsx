@@ -1,3 +1,4 @@
+import React from 'react';
 // Tweaks panel + reveal-on-scroll observer + edit-mode protocol.
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
