@@ -1,3 +1,4 @@
+import React from 'react';
 // Rotating wireframe — a stylized AV device (simplified conference display / camera bar).
 // Pure canvas 3D projection, no libs. Drifts slowly, responds to mouse parallax.
 

@@ -1,3 +1,4 @@
+import React from 'react';
 // Ink diffusion animation — soft drifting color blobs like ink in water.
 // Warm cream base, rose + amber radial gradients breathing slowly.
 // No hard edges, no lines — pure organic warmth behind the hero text.
