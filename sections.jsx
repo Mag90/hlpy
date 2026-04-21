@@ -272,6 +272,17 @@ const Testimonial = () => {
     }, 260);
   };
 
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setFading(true);
+      setTimeout(() => {
+        setIdx(i => (i + 1) % TESTIMONIALS.length);
+        setFading(false);
+      }, 260);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   const t = TESTIMONIALS[idx];
 
   return (
