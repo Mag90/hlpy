@@ -1,14 +1,16 @@
+import React from 'react';
+import logoImage from './HLPY_Logo_Transparent.avif';
 // Main sections: Nav, Hero, Marquee, Services, Capability, Testimonial, Footer, Tweaks.
 
 const SERVICES = [
-  { num: "01", name: "Mötesteknik",           tag: "AV / Rooms",     caption: "Installation — Teams Room, Stockholm" },
-  { num: "02", name: "Videomöten",            tag: "Teams · Zoom · Meet", caption: "BYOD-uppsättning, huvudkontor" },
-  { num: "03", name: "Arbetsplatsteknik",     tag: "Hardware",       caption: "Laptops, headsets, skärmar" },
-  { num: "04", name: "Digital signage",       tag: "Displays",       caption: "Entré-skärm, lobbyinstallation" },
-  { num: "05", name: "Kontorsmöblering",      tag: "Interior",       caption: "Mötesrum, komplett lösning" },
-  { num: "06", name: "Konsultation",          tag: "Advisory",       caption: "Inventering & projektledning" },
-  { num: "07", name: "Da & CaaS",             tag: "Content",        caption: "Annonssäljning & innehåll" },
-  { num: "08", name: "IT Lifecycle",          tag: "Circular",       caption: "Återköp & cirkulär ekonomi" },
+  { num: "01", name: "Mötesteknik", tag: "AV / Rooms", caption: "Installation — Teams Room, Stockholm" },
+  { num: "02", name: "Videomöten", tag: "Teams · Zoom · Meet", caption: "BYOD-uppsättning, huvudkontor" },
+  { num: "03", name: "Arbetsplatsteknik", tag: "Hardware", caption: "Laptops, headsets, skärmar" },
+  { num: "04", name: "Digital signage", tag: "Displays", caption: "Entré-skärm, lobbyinstallation" },
+  { num: "05", name: "Kontorsmöblering", tag: "Interior", caption: "Mötesrum, komplett lösning" },
+  { num: "06", name: "Konsultation", tag: "Advisory", caption: "Inventering & projektledning" },
+  { num: "07", name: "Da & CaaS", tag: "Content", caption: "Annonssäljning & innehåll" },
+  { num: "08", name: "IT Lifecycle", tag: "Circular", caption: "Återköp & cirkulär ekonomi" },
 ];
 
 const Nav = () => {
@@ -20,8 +22,10 @@ const Nav = () => {
   }, []);
   return (
     <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
-      <a href="#" className="nav-logo">hlpy</a>
-      <div style={{display:'flex', alignItems:'center', gap: 12}}>
+      <a href="#" className="nav-logo" aria-label="HLPY">
+        <img src={logoImage} alt="HLPY" className="logo-image nav-logo-image" />
+      </a>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <div className="nav-links">
           <a className="nav-link" href="#services">Vi erbjuder</a>
           <a className="nav-link" href="#about">Om oss</a>
@@ -48,11 +52,11 @@ const Hero = () => (
       <div className="hero-eyebrow-row">
         <span className="dot" />
         <span>Stockholm — Sedan 2021</span>
-        <span style={{opacity: 0.4}}>/</span>
+        <span style={{ opacity: 0.4 }}>/</span>
         <span>AV & IT för moderna arbetsplatser</span>
       </div>
       <h1>
-        Mötesteknik<br/>
+        Mötesteknik<br />
         som bara <em>fungerar</em>.
       </h1>
     </div>
@@ -104,21 +108,21 @@ const ServicePreview = ({ pos, visible, service }) => {
       }}
     >
       <div style={{
-        position:'absolute', inset: 0,
+        position: 'absolute', inset: 0,
         backgroundImage: `repeating-linear-gradient(45deg, oklch(1 0 0 / 0.06) 0 2px, transparent 2px 12px)`,
       }} />
       <div style={{
-        position:'absolute', top: 14, left: 14, right: 14,
-        display:'flex', justifyContent:'space-between',
-        fontFamily:'var(--mono)', fontSize: 10, letterSpacing:'0.12em',
-        textTransform:'uppercase', color: 'oklch(1 0 0 / 0.85)',
+        position: 'absolute', top: 14, left: 14, right: 14,
+        display: 'flex', justifyContent: 'space-between',
+        fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.12em',
+        textTransform: 'uppercase', color: 'oklch(1 0 0 / 0.85)',
       }}>
         <span>{service.num} / hlpy</span>
         <span>photo placeholder</span>
       </div>
       <div style={{
-        position:'absolute', bottom: 14, left: 14, right: 14,
-        fontFamily:'var(--serif)', fontStyle:'italic', fontSize: 18,
+        position: 'absolute', bottom: 14, left: 14, right: 14,
+        fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 18,
         color: 'oklch(1 0 0 / 0.95)', lineHeight: 1.2,
       }}>
         {service.caption}
@@ -138,7 +142,7 @@ const Services = () => {
       <div className="services-header reveal">
         <div>
           <div className="eyebrow">02 — Vi erbjuder</div>
-          <h2>Åtta områden.<br/>Ett <em>helhetsgrepp</em>.</h2>
+          <h2>Åtta områden.<br />Ett <em>helhetsgrepp</em>.</h2>
         </div>
         <p>
           Från första behovsanalys till drift, underhåll och cirkulär återtagning —
@@ -178,7 +182,7 @@ const Capability = () => (
       <div className="reveal">
         <div className="eyebrow">03 — Om oss</div>
         <h3>
-          Ett mindre team med<br/>
+          Ett mindre team med<br />
           <em>större</em> omtanke.
         </h3>
         <p>
@@ -194,14 +198,14 @@ const Capability = () => (
           gap: '28px 20px',
         }}>
           {[
-            { initials: 'LJ', name: 'Lukas Jung',      role: 'VD / Grundare', bg: 'linear-gradient(135deg, oklch(0.82 0.09 15), oklch(0.52 0.22 15))' },
-            { initials: 'MN', name: 'Mikael Näslund',  role: 'COO',           bg: 'linear-gradient(135deg, oklch(0.78 0.11 35), oklch(0.52 0.18 25))' },
-            { initials: 'LW', name: 'Lukas Wallander', role: 'Sälj',          bg: 'linear-gradient(135deg, oklch(0.80 0.10 55), oklch(0.55 0.16 35))' },
-            { initials: 'JM', name: 'John Mandin',     role: 'Tekniker',      bg: 'linear-gradient(135deg, oklch(0.82 0.09 15), oklch(0.48 0.20 15))' },
-            { initials: 'MB', name: 'Markus Baard',    role: 'Tekniker',      bg: 'linear-gradient(135deg, oklch(0.75 0.10 25), oklch(0.50 0.17 15))' },
-            { initials: '+',  name: 'Vi växer',        role: 'Nästa kollega?',bg: 'transparent', dashed: true },
+            { initials: 'LJ', name: 'Lukas Jung', role: 'VD / Grundare', bg: 'linear-gradient(135deg, oklch(0.82 0.09 15), oklch(0.52 0.22 15))' },
+            { initials: 'MN', name: 'Mikael Näslund', role: 'COO', bg: 'linear-gradient(135deg, oklch(0.78 0.11 35), oklch(0.52 0.18 25))' },
+            { initials: 'LW', name: 'Lukas Wallander', role: 'Sälj', bg: 'linear-gradient(135deg, oklch(0.80 0.10 55), oklch(0.55 0.16 35))' },
+            { initials: 'JM', name: 'John Mandin', role: 'Tekniker', bg: 'linear-gradient(135deg, oklch(0.82 0.09 15), oklch(0.48 0.20 15))' },
+            { initials: 'MB', name: 'Markus Baard', role: 'Tekniker', bg: 'linear-gradient(135deg, oklch(0.75 0.10 25), oklch(0.50 0.17 15))' },
+            { initials: '+', name: 'Vi växer', role: 'Nästa kollega?', bg: 'transparent', dashed: true },
           ].map((m) => (
-            <div key={m.initials} style={{display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center', gap: 10}}>
+            <div key={m.initials} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 10 }}>
               <div style={{
                 width: 72, height: 72, minWidth: 72, minHeight: 72,
                 borderRadius: '50%',
@@ -214,8 +218,8 @@ const Capability = () => (
                 flexShrink: 0, flexGrow: 0,
               }}>{m.initials}</div>
               <div>
-                <div style={{fontFamily:'var(--serif)', fontWeight:300, fontSize:14, letterSpacing:'-0.01em', color:'var(--cream)', lineHeight:1.2}}>{m.name}</div>
-                <div style={{fontFamily:'var(--mono)', fontSize:9.5, letterSpacing:'0.12em', textTransform:'uppercase', color:'color-mix(in oklch, var(--cream) 55%, transparent)', marginTop:4}}>{m.role}</div>
+                <div style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 14, letterSpacing: '-0.01em', color: 'var(--cream)', lineHeight: 1.2 }}>{m.name}</div>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 9.5, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'color-mix(in oklch, var(--cream) 55%, transparent)', marginTop: 4 }}>{m.role}</div>
               </div>
             </div>
           ))}
@@ -232,38 +236,101 @@ const Capability = () => (
   </section>
 );
 
-const Testimonial = () => (
-  <section className="testimonial" id="testimonial">
-    <div className="testimonial-inner">
-      <div className="eyebrow reveal">04 — Vad kunderna säger</div>
-      <blockquote className="testimonial-quote reveal">
-        "Från hlpy får jag alltid <em>bra och adekvat rådgivning</em> inför inköp
-        och installationer. Leveransen och uppföljningen efteråt är precis så bra
-        som man kan önska sig."
-      </blockquote>
-      <div className="testimonial-attr reveal">
-        <div className="testimonial-avatar">N</div>
-        <div>
-          <div className="testimonial-name">Niklas Unnhem</div>
-          <div className="testimonial-role">VD — Trivector System</div>
+const TESTIMONIALS = [
+  {
+    initials: 'N',
+    quote: <>
+      "Från hlpy får jag alltid <em>bra och adekvat rådgivning</em> inför inköp
+      och installationer. Leveransen och uppföljningen efteråt är precis så bra
+      som man kan önska sig."
+    </>,
+    name: 'Niklas Unnhem',
+    role: 'VD — Trivector System',
+  },
+  {
+    initials: 'J',
+    quote: <>
+      "Vi köper hårdvara och installationstjänster till våra konferensrum från hlpy
+      och har en <em>bra dialog från början</em> när det gäller förslag på och val av utrustning.
+      Sedan sköter de leverans och installation utan någon större insats från oss."
+    </>,
+    name: 'Johan Tirfing',
+    role: 'IT ansvarig — Toyota Material Handling',
+  },
+];
+
+const Testimonial = () => {
+  const [idx, setIdx] = React.useState(0);
+  const [fading, setFading] = React.useState(false);
+
+  const goTo = (next) => {
+    if (next === idx) return;
+    setFading(true);
+    setTimeout(() => {
+      setIdx(next);
+      setFading(false);
+    }, 260);
+  };
+
+  const t = TESTIMONIALS[idx];
+
+  return (
+    <section className="testimonial" id="testimonial">
+      <div className="testimonial-inner">
+        <div className="eyebrow">04 — Vad kunderna säger</div>
+        <blockquote
+          className="testimonial-quote"
+          style={{ transition: 'opacity 0.26s ease', opacity: fading ? 0 : 1 }}
+        >
+          {t.quote}
+        </blockquote>
+        <div
+          className="testimonial-attr"
+          style={{ transition: 'opacity 0.26s ease', opacity: fading ? 0 : 1 }}
+        >
+          <div className="testimonial-avatar">{t.initials}</div>
+          <div>
+            <div className="testimonial-name">{t.name}</div>
+            <div className="testimonial-role">{t.role}</div>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: 10, marginTop: 40 }}>
+          {TESTIMONIALS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              style={{
+                width: i === idx ? 28 : 8,
+                height: 8,
+                borderRadius: 4,
+                border: 'none',
+                cursor: 'pointer',
+                background: i === idx ? 'var(--rose)' : 'color-mix(in oklch, var(--rose) 30%, transparent)',
+                transition: 'width 0.3s ease, background 0.3s ease',
+                padding: 0,
+              }}
+            />
+          ))}
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const Footer = () => (
   <footer className="footer" id="contact">
     <div className="footer-inner">
-      <h2 className="footer-cta reveal" style={{lineHeight: 1.2}}>
-        Låt oss bygga något<br/>
+      <h2 className="footer-cta reveal" style={{ lineHeight: 1.2 }}>
+        Låt oss bygga något<br />
         <em>bättre.</em> <a href="mailto:hej@hlpy.se">hej@hlpy.se →</a>
       </h2>
 
       <div className="footer-grid">
         <div className="footer-col">
-          <div className="footer-logo">hlpy</div>
-          <p style={{color: 'var(--ink-mute)', maxWidth: '32ch', fontSize: 13}}>
+          <div className="footer-logo">
+            <img src={logoImage} alt="HLPY" className="logo-image footer-logo-image" />
+          </div>
+          <p style={{ color: 'var(--ink-mute)', maxWidth: '32ch', fontSize: 13 }}>
             Smart, komplett AV & IT för moderna arbetsplatser. Bromma, Stockholm.
           </p>
         </div>
@@ -304,17 +371,17 @@ const Process = () => (
     background: 'var(--cream)',
     borderTop: '1px solid color-mix(in oklch, var(--ink) 10%, transparent)',
   }} id="process">
-    <div style={{maxWidth: 'var(--maxw)', margin: '0 auto'}}>
+    <div style={{ maxWidth: 'var(--maxw)', margin: '0 auto' }}>
 
       {/* Header — same pattern as Services */}
-      <div className="services-header reveal" style={{marginBottom: 40}}>
-        <div style={{gridColumn: '1 / -1'}}>
+      <div className="services-header reveal" style={{ marginBottom: 40 }}>
+        <div style={{ gridColumn: '1 / -1' }}>
           <div className="eyebrow">03 — Hur går det till</div>
           <h2 style={{
-            fontFamily:'var(--serif)', fontWeight:300,
-            fontSize:'clamp(44px, 6.5vw, 96px)', lineHeight:0.95,
-            letterSpacing:'-0.025em', margin:'16px 0 0',
-            fontVariationSettings:'"SOFT" 50, "opsz" 144',
+            fontFamily: 'var(--serif)', fontWeight: 300,
+            fontSize: 'clamp(44px, 6.5vw, 96px)', lineHeight: 0.95,
+            letterSpacing: '-0.025em', margin: '16px 0 0',
+            fontVariationSettings: '"SOFT" 50, "opsz" 144',
             whiteSpace: 'nowrap',
           }}>En process i <em>tre</em> steg.</h2>
         </div>
@@ -322,34 +389,34 @@ const Process = () => (
 
       {/* Cards */}
       <div className="reveal" style={{
-        display:'grid', gridTemplateColumns:'repeat(3, 1fr)',
+        display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
         gap: 20,
-        borderTop:'1px solid color-mix(in oklch, var(--ink) 15%, transparent)',
+        borderTop: '1px solid color-mix(in oklch, var(--ink) 15%, transparent)',
         paddingTop: 40,
       }}>
         {[
-          { num:'01', kicker:'Avstämning',   title:['Vi lyssnar ', <em key="e">först</em>, '.'],   desc:'Digitalt eller fysiskt möte där vi går igenom era behov och tillsammans sätter en plan efter era krav och önskemål.' },
-          { num:'02', kicker:'Behovsanalys', title:['Sen ', <em key="e">förstår</em>, ' vi.'],     desc:'Grundlig genomgång av hur ni arbetar idag — och hur ni vill arbeta imorgon. Ett förslag som motsvarar era förväntningar.' },
-          { num:'03', kicker:'Leverans',     title:['Sen ', <em key="e">levererar</em>, ' vi.'],   desc:'Våra egna tekniker installerar — med fokus på noggrannhet, precision och uppföljning. Inga underleverantörer.' },
+          { num: '01', kicker: 'Avstämning', title: ['Vi lyssnar ', <em key="e">först</em>, '.'], desc: 'Digitalt eller fysiskt möte där vi går igenom era behov och tillsammans sätter en plan efter era krav och önskemål.' },
+          { num: '02', kicker: 'Behovsanalys', title: ['Sen ', <em key="e">förstår</em>, ' vi.'], desc: 'Grundlig genomgång av hur ni arbetar idag — och hur ni vill arbeta imorgon. Ett förslag som motsvarar era förväntningar.' },
+          { num: '03', kicker: 'Leverans', title: ['Sen ', <em key="e">levererar</em>, ' vi.'], desc: 'Våra egna tekniker installerar — med fokus på noggrannhet, precision och uppföljning. Inga underleverantörer.' },
         ].map((s) => (
           <div key={s.num} style={{
-            background:'var(--cream-2)',
-            border:'1px solid color-mix(in oklch, var(--ink) 10%, transparent)',
+            background: 'var(--cream-2)',
+            border: '1px solid color-mix(in oklch, var(--ink) 10%, transparent)',
             borderRadius: 8,
-            padding:'40px 32px',
-            display:'flex', flexDirection:'column', gap:16,
+            padding: '40px 32px',
+            display: 'flex', flexDirection: 'column', gap: 16,
             minHeight: 300,
           }}>
-            <span style={{fontFamily:'var(--mono)', fontSize:11, letterSpacing:'0.14em', color:'var(--rose)'}}>{s.num}</span>
-            <span style={{fontFamily:'var(--mono)', fontSize:11, letterSpacing:'0.14em', textTransform:'uppercase', color:'var(--ink-mute)', marginTop:'auto'}}>{s.kicker}</span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.14em', color: 'var(--rose)' }}>{s.num}</span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--ink-mute)', marginTop: 'auto' }}>{s.kicker}</span>
             <h3 style={{
-              fontFamily:'var(--serif)', fontWeight:300,
-              fontSize:'clamp(30px, 2.6vw, 40px)', lineHeight:1,
-              letterSpacing:'-0.02em', margin:0,
-              fontVariationSettings:'"SOFT" 50, "opsz" 96',
-              color:'var(--ink)',
+              fontFamily: 'var(--serif)', fontWeight: 300,
+              fontSize: 'clamp(30px, 2.6vw, 40px)', lineHeight: 1,
+              letterSpacing: '-0.02em', margin: 0,
+              fontVariationSettings: '"SOFT" 50, "opsz" 96',
+              color: 'var(--ink)',
             }}>{s.title}</h3>
-            <p style={{fontSize:14.5, lineHeight:1.55, color:'var(--ink-soft)', margin:0}}>{s.desc}</p>
+            <p style={{ fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-soft)', margin: 0 }}>{s.desc}</p>
           </div>
         ))}
       </div>
@@ -370,7 +437,7 @@ const Partners = () => (
       position: 'absolute', inset: 0, pointerEvents: 'none',
       background: 'radial-gradient(ellipse at 20% 50%, oklch(0.58 0.19 15 / 0.12), transparent 65%)',
     }} />
-    <div style={{maxWidth: 'var(--maxw)', margin: '0 auto', position: 'relative', zIndex: 1}}>
+    <div style={{ maxWidth: 'var(--maxw)', margin: '0 auto', position: 'relative', zIndex: 1 }}>
       <div style={{
         fontFamily: 'var(--mono)', fontSize: 11,
         letterSpacing: '0.14em', textTransform: 'uppercase',
@@ -396,6 +463,7 @@ const Partners = () => (
 
 window.Process = Process;
 window.Partners = Partners;
+window.Nav = Nav;
 window.Hero = Hero;
 window.Marquee = Marquee;
 window.Services = Services;
