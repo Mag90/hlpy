@@ -1,5 +1,7 @@
 import React from 'react';
 import logoImage from './HLPY_Logo_Transparent.avif';
+import HeroCanvas from './hero_canvas.jsx';
+import WireframeCanvas from './wireframe_canvas.jsx';
 // Main sections: Nav, Hero, Marquee, Services, Capability, Testimonial, Footer, Tweaks.
 
 const SERVICES = [
@@ -40,7 +42,7 @@ const Nav = () => {
 
 const Hero = () => (
   <section className="hero">
-    <window.HeroCanvas />
+    <HeroCanvas />
     <div className="hero-plate">
       <div className="hero-plate-label">
         <span className="rec" />
@@ -227,7 +229,7 @@ const Capability = () => (
       </div>
 
       <div className="capability-visual reveal">
-        <window.WireframeCanvas />
+        <WireframeCanvas />
         <div className="caption">
           <span>Live render — Conference bar / 02</span>
         </div>
@@ -472,12 +474,4 @@ const Partners = () => (
   </section>
 );
 
-window.Process = Process;
-window.Partners = Partners;
-window.Nav = Nav;
-window.Hero = Hero;
-window.Marquee = Marquee;
-window.Services = Services;
-window.Capability = Capability;
-window.Testimonial = Testimonial;
-window.Footer = Footer;
+export { Nav, Hero, Marquee, Services, Capability, Testimonial, Footer, Process, Partners };

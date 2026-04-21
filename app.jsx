@@ -1,4 +1,5 @@
 import React from 'react';
+import { Nav, Hero, Marquee, Services, Process, Capability, Testimonial, Footer } from './sections.jsx';
 // Tweaks panel + reveal-on-scroll observer + edit-mode protocol.
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -121,17 +122,17 @@ const App = () => {
   useReveal();
   return (
     <>
-      <window.Nav />
-      <window.Hero />
-      <window.Marquee />
-      <window.Services />
-      <window.Process />
-      <window.Capability />
-      <window.Testimonial />
-      <window.Footer />
+      <Nav />
+      <Hero />
+      <Marquee />
+      <Services />
+      <Process />
+      <Capability />
+      <Testimonial />
+      <Footer />
       <Tweaks />
     </>
   );
 };
 
-window.App = App;
+export default App;
