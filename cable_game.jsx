@@ -456,10 +456,10 @@ const DeviceShape = ({ device, highlight }) => {
           width={device.w + 28} height={device.h + 28}
           rx={14}
           fill="none"
-          stroke="oklch(0.58 0.19 15)"
+          stroke="oklch(0.62 0.16 145)"
           strokeWidth="1.4"
           strokeDasharray="6 4"
-          opacity="0.65"
+          opacity="0.75"
           style={{ transition: 'opacity 0.2s' }}
         />
       )}
