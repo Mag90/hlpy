@@ -1,7 +1,10 @@
 import React from 'react';
 import { Nav, Hero, Marquee, Services, Process, Capability, Testimonial, Footer } from './sections.jsx';
-// Tweaks panel + reveal-on-scroll observer + edit-mode protocol.
+import References from './references.jsx';
+import CableGame from './cable_game.jsx';
+import Shop from './shop.jsx';
 
+/* ---------- Tweaks panel (legacy edit-mode protocol) ---------- */
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "pinkIntensity": "balanced",
   "typeScale": "regular",
@@ -19,40 +22,25 @@ const Tweaks = () => {
       if (e.data.type === '__deactivate_edit_mode') setOpen(false);
     };
     window.addEventListener('message', onMsg);
-    // announce only after listener is wired
     window.parent.postMessage({ type: '__edit_mode_available' }, '*');
     return () => window.removeEventListener('message', onMsg);
   }, []);
 
-  // Apply CSS var changes based on values
   React.useEffect(() => {
     const root = document.documentElement;
-    // Pink intensity
     if (vals.pinkIntensity === 'soft') {
-      root.style.setProperty('--rose',      'oklch(0.66 0.14 15)');
+      root.style.setProperty('--rose', 'oklch(0.66 0.14 15)');
       root.style.setProperty('--rose-deep', 'oklch(0.52 0.13 15)');
       root.style.setProperty('--rose-wash', 'oklch(0.96 0.025 15)');
     } else if (vals.pinkIntensity === 'bold') {
-      root.style.setProperty('--rose',      'oklch(0.52 0.22 15)');
+      root.style.setProperty('--rose', 'oklch(0.52 0.22 15)');
       root.style.setProperty('--rose-deep', 'oklch(0.38 0.19 15)');
       root.style.setProperty('--rose-wash', 'oklch(0.90 0.06 15)');
     } else {
-      root.style.setProperty('--rose',      'oklch(0.58 0.19 15)');
+      root.style.setProperty('--rose', 'oklch(0.58 0.19 15)');
       root.style.setProperty('--rose-deep', 'oklch(0.42 0.17 15)');
       root.style.setProperty('--rose-wash', 'oklch(0.93 0.04 15)');
     }
-    // Hero mood — cream tint
-    if (vals.heroMood === 'cool') {
-      root.style.setProperty('--cream',   'oklch(0.975 0.008 240)');
-      root.style.setProperty('--cream-2', 'oklch(0.955 0.012 240)');
-    } else if (vals.heroMood === 'dark') {
-      root.style.setProperty('--cream',   'oklch(0.96 0.012 55)');
-      root.style.setProperty('--cream-2', 'oklch(0.93 0.018 50)');
-    } else {
-      root.style.setProperty('--cream',   'oklch(0.975 0.012 55)');
-      root.style.setProperty('--cream-2', 'oklch(0.955 0.018 50)');
-    }
-    // Type scale
     const scale = vals.typeScale === 'large' ? 1.1 : vals.typeScale === 'small' ? 0.9 : 1;
     root.style.fontSize = `${16 * scale}px`;
   }, [vals]);
@@ -72,21 +60,13 @@ const Tweaks = () => {
 
   return (
     <div className={`tweaks ${open ? 'open' : ''}`}>
-      <h5><span>Tweaks</span><span className="tag">HLPY · v1</span></h5>
+      <h5><span>Tweaks</span><span className="tag">HLPY · v2</span></h5>
       <div className="tweak-row">
         <label>Rose intensity</label>
         <div className="opts">
           <Option k="pinkIntensity" v="soft" label="Soft" />
           <Option k="pinkIntensity" v="balanced" label="Balanced" />
           <Option k="pinkIntensity" v="bold" label="Bold" />
-        </div>
-      </div>
-      <div className="tweak-row">
-        <label>Hero mood</label>
-        <div className="opts">
-          <Option k="heroMood" v="warm" label="Warm" />
-          <Option k="heroMood" v="cool" label="Cool" />
-          <Option k="heroMood" v="dark" label="Muted" />
         </div>
       </div>
       <div className="tweak-row">
@@ -101,7 +81,7 @@ const Tweaks = () => {
   );
 };
 
-// Reveal observer — adds .in to any .reveal element
+/* ---------- Reveal observer ---------- */
 const useReveal = () => {
   React.useEffect(() => {
     const els = document.querySelectorAll('.reveal');
@@ -118,19 +98,80 @@ const useReveal = () => {
   }, []);
 };
 
+/* ---------- Section progress dots ---------- */
+const PROGRESS_SECTIONS = [
+  { id: 'hero',         label: 'Start' },
+  { id: 'services',     label: 'Vi erbjuder' },
+  { id: 'process',      label: 'Process' },
+  { id: 'references',   label: 'Referenser' },
+  { id: 'about',        label: 'Om oss' },
+  { id: 'game',         label: 'Spelet' },
+  { id: 'testimonial',  label: 'Kunder' },
+  { id: 'contact',      label: 'Kontakt' },
+];
+
+const SectionProgress = () => {
+  const [active, setActive] = React.useState('hero');
+
+  React.useEffect(() => {
+    const observers = [];
+    const seen = {};
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { seen[e.target.id] = e.intersectionRatio; });
+      // Pick the section with the highest intersection ratio
+      let best = null;
+      let bestRatio = 0;
+      Object.entries(seen).forEach(([id, ratio]) => {
+        if (ratio > bestRatio) { bestRatio = ratio; best = id; }
+      });
+      if (best) setActive(best);
+    }, { threshold: [0, 0.2, 0.5, 0.8, 1] });
+    PROGRESS_SECTIONS.forEach(s => {
+      const el = document.getElementById(s.id);
+      if (el) io.observe(el);
+    });
+    observers.push(io);
+    return () => observers.forEach(o => o.disconnect());
+  }, []);
+
+  return (
+    <div className="section-progress">
+      {PROGRESS_SECTIONS.map(s => (
+        <a
+          key={s.id}
+          href={`#${s.id}`}
+          className={`section-progress-dot ${active === s.id ? 'active' : ''}`}
+        >
+          <span className="label">{s.label}</span>
+          <span className="pip" />
+        </a>
+      ))}
+    </div>
+  );
+};
+
+/* ---------- App ---------- */
 const App = () => {
   useReveal();
+  const [shopOpen, setShopOpen] = React.useState(false);
+
   return (
     <>
-      <Nav />
-      <Hero />
-      <Marquee />
-      <Services />
-      <Process />
-      <Capability />
-      <Testimonial />
-      <Footer />
-      <Tweaks />
+      <div className="marketing-site">
+        <Nav onOpenShop={() => setShopOpen(true)} />
+        <Hero />
+        <Marquee />
+        <Services />
+        <Process />
+        <References />
+        <Capability />
+        <CableGame />
+        <Testimonial />
+        <Footer onOpenShop={() => setShopOpen(true)} />
+        <SectionProgress />
+        <Tweaks />
+      </div>
+      <Shop open={shopOpen} onClose={() => setShopOpen(false)} />
     </>
   );
 };

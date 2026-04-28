@@ -15,7 +15,7 @@ const SERVICES = [
   { num: "08", name: "IT Lifecycle", tag: "Circular", caption: "Återköp & cirkulär ekonomi" },
 ];
 
-const Nav = () => {
+const Nav = ({ onOpenShop }) => {
   const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -30,9 +30,10 @@ const Nav = () => {
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <div className="nav-links">
           <a className="nav-link" href="#services">Vi erbjuder</a>
+          <a className="nav-link" href="#references">Referenser</a>
           <a className="nav-link" href="#about">Om oss</a>
-          <a className="nav-link" href="#testimonial">Kunder</a>
-          <a className="nav-link" href="#careers">Karriär</a>
+          <a className="nav-link" href="#game">Spel</a>
+          <button type="button" className="nav-link" onClick={onOpenShop}>Shop</button>
         </div>
         <a className="nav-cta" href="#contact">Kontakta oss →</a>
       </div>
@@ -68,6 +69,16 @@ const Hero = () => (
         Vi bygger kompletta AV- och IT-miljöer för företag som vill att tekniken
         ska försvinna i bakgrunden — och låta arbetet stå i centrum.
       </p>
+      <div className="hero-meta">
+        <div className="spec-line" style={{ minWidth: 200 }}>
+          <span className="label">Sedan</span>
+          <span className="value">2021</span>
+        </div>
+        <div className="spec-line" style={{ minWidth: 200 }}>
+          <span className="label">Bromma</span>
+          <span className="value">Stockholm</span>
+        </div>
+      </div>
       <div className="hero-scroll">
         <span>Scrolla</span>
         <span className="arrow">↓</span>
@@ -143,7 +154,11 @@ const Services = () => {
     <section className="services" id="services">
       <div className="services-header reveal">
         <div>
-          <div className="eyebrow">02 — Vi erbjuder</div>
+          <div className="section-num">
+            <span className="accent">02</span>
+            <span className="of">/ OF 08</span>
+            <span>· Vi erbjuder</span>
+          </div>
           <h2>Åtta områden.<br />Ett <em>helhetsgrepp</em>.</h2>
         </div>
         <p>
@@ -178,11 +193,24 @@ const Services = () => {
   );
 };
 
+const TEAM = [
+  { initials: 'LJ', name: 'Lukas Jung', role: 'VD / Grundare', bg: 'linear-gradient(135deg, oklch(0.82 0.09 15), oklch(0.52 0.22 15))' },
+  { initials: 'MN', name: 'Mikael Näslund', role: 'COO', bg: 'linear-gradient(135deg, oklch(0.78 0.11 35), oklch(0.52 0.18 25))' },
+  { initials: 'LW', name: 'Lukas Wallander', role: 'Sälj', bg: 'linear-gradient(135deg, oklch(0.80 0.10 55), oklch(0.55 0.16 35))' },
+  { initials: 'JM', name: 'John Mandin', role: 'Tekniker', bg: 'linear-gradient(135deg, oklch(0.82 0.09 15), oklch(0.48 0.20 15))' },
+  { initials: 'MB', name: 'Markus Baard', role: 'Tekniker', bg: 'linear-gradient(135deg, oklch(0.75 0.10 25), oklch(0.50 0.17 15))' },
+  { initials: '+', name: 'Vi växer', role: 'Nästa kollega?', dashed: true },
+];
+
 const Capability = () => (
   <section className="capability" id="about">
     <div className="capability-inner">
       <div className="reveal">
-        <div className="eyebrow">03 — Om oss</div>
+        <div className="section-num">
+          <span className="accent">05</span>
+          <span className="of">/ OF 08</span>
+          <span>· Om oss</span>
+        </div>
         <h3>
           Ett mindre team med<br />
           <em>större</em> omtanke.
@@ -192,36 +220,18 @@ const Capability = () => (
           med samma närhet som en liten byrå, och samma bredd som en stor integratör.
           Sedan dess har vi växt stadigt — med uppdrag från start-ups till etablerade företag.
         </p>
-        <div style={{
-          marginTop: 36, paddingTop: 28,
-          borderTop: '1px solid color-mix(in oklch, var(--cream) 15%, transparent)',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '28px 20px',
-        }}>
-          {[
-            { initials: 'LJ', name: 'Lukas Jung', role: 'VD / Grundare', bg: 'linear-gradient(135deg, oklch(0.82 0.09 15), oklch(0.52 0.22 15))' },
-            { initials: 'MN', name: 'Mikael Näslund', role: 'COO', bg: 'linear-gradient(135deg, oklch(0.78 0.11 35), oklch(0.52 0.18 25))' },
-            { initials: 'LW', name: 'Lukas Wallander', role: 'Sälj', bg: 'linear-gradient(135deg, oklch(0.80 0.10 55), oklch(0.55 0.16 35))' },
-            { initials: 'JM', name: 'John Mandin', role: 'Tekniker', bg: 'linear-gradient(135deg, oklch(0.82 0.09 15), oklch(0.48 0.20 15))' },
-            { initials: 'MB', name: 'Markus Baard', role: 'Tekniker', bg: 'linear-gradient(135deg, oklch(0.75 0.10 25), oklch(0.50 0.17 15))' },
-            { initials: '+', name: 'Vi växer', role: 'Nästa kollega?', bg: 'transparent', dashed: true },
-          ].map((m) => (
-            <div key={m.initials} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 10 }}>
-              <div style={{
-                width: 72, height: 72, minWidth: 72, minHeight: 72,
-                borderRadius: '50%',
-                background: m.bg,
-                border: m.dashed ? '1px dashed color-mix(in oklch, var(--cream) 30%, transparent)' : 'none',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--serif)', fontStyle: m.dashed ? 'normal' : 'italic',
-                color: 'oklch(0.975 0.012 55)',
-                fontSize: m.dashed ? 28 : 22,
-                flexShrink: 0, flexGrow: 0,
-              }}>{m.initials}</div>
+        <div className="team-list">
+          {TEAM.map((m) => (
+            <div key={m.initials} className="team-member">
+              <div
+                className={`team-avatar${m.dashed ? ' team-avatar-add' : ''}`}
+                style={m.dashed ? undefined : { background: m.bg }}
+              >
+                {m.initials}
+              </div>
               <div>
-                <div style={{ fontFamily: 'var(--serif)', fontWeight: 300, fontSize: 14, letterSpacing: '-0.01em', color: 'var(--cream)', lineHeight: 1.2 }}>{m.name}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: 9.5, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'color-mix(in oklch, var(--cream) 55%, transparent)', marginTop: 4 }}>{m.role}</div>
+                <div className="team-name">{m.name}</div>
+                <div className="team-role">{m.role}</div>
               </div>
             </div>
           ))}
@@ -290,7 +300,11 @@ const Testimonial = () => {
   return (
     <section className="testimonial" id="testimonial">
       <div className="testimonial-inner">
-        <div className="eyebrow">04 — Vad kunderna säger</div>
+        <div className="section-num">
+          <span className="accent">07</span>
+          <span className="of">/ OF 08</span>
+          <span>· Vad kunderna säger</span>
+        </div>
         <blockquote
           className="testimonial-quote"
           style={{ transition: 'opacity 0.26s ease', opacity: fading ? 0 : 1 }}
@@ -330,10 +344,10 @@ const Testimonial = () => {
   );
 };
 
-const Footer = () => (
+const Footer = ({ onOpenShop }) => (
   <footer className="footer" id="contact">
     <div className="footer-inner">
-      <h2 className="footer-cta reveal" style={{ lineHeight: 1.2 }}>
+      <h2 className="footer-cta reveal">
         Låt oss bygga något<br />
         <em>bättre.</em> <a href="mailto:hej@hlpy.se">hej@hlpy.se →</a>
       </h2>
@@ -343,23 +357,23 @@ const Footer = () => (
           <div className="footer-logo">
             <img src={logoImage} alt="HLPY" className="logo-image footer-logo-image" />
           </div>
-          <p style={{ color: 'var(--ink-mute)', maxWidth: '32ch', fontSize: 13 }}>
+          <p style={{ color: 'color-mix(in oklch, var(--cream) 60%, transparent)', maxWidth: '32ch', fontSize: 13 }}>
             Smart, komplett AV & IT för moderna arbetsplatser. Bromma, Stockholm.
           </p>
         </div>
         <div className="footer-col">
           <h4>Tjänster</h4>
-          <a href="#">Mötesteknik</a>
-          <a href="#">Videomöten</a>
-          <a href="#">Digital signage</a>
-          <a href="#">IT Lifecycle</a>
+          <a href="#services">Mötesteknik</a>
+          <a href="#services">Videomöten</a>
+          <a href="#services">Digital signage</a>
+          <a href="#services">IT Lifecycle</a>
         </div>
         <div className="footer-col">
           <h4>Företaget</h4>
-          <a href="#">Om oss</a>
-          <a href="#">Karriär</a>
-          <a href="#">Kontakt</a>
-          <a href="#">Press</a>
+          <a href="#about">Om oss</a>
+          <a href="#references">Referenser</a>
+          <button type="button" onClick={onOpenShop} style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', font: 'inherit', color: 'inherit', textAlign: 'left', display: 'block', marginBottom: 6 }}>Webbshop</button>
+          <a href="#game">Spelet</a>
         </div>
         <div className="footer-col">
           <h4>Kontakt</h4>
@@ -378,62 +392,36 @@ const Footer = () => (
   </footer>
 );
 
-const Process = () => (
-  <section style={{
-    padding: '160px var(--gutter) 140px',
-    background: 'var(--cream)',
-    borderTop: '1px solid color-mix(in oklch, var(--ink) 10%, transparent)',
-  }} id="process">
-    <div style={{ maxWidth: 'var(--maxw)', margin: '0 auto' }}>
+const PROCESS_STEPS = [
+  { num: '01', kicker: 'Avstämning', title: ['Vi lyssnar ', <em key="e">först</em>, '.'], desc: 'Digitalt eller fysiskt möte där vi går igenom era behov och tillsammans sätter en plan efter era krav och önskemål.' },
+  { num: '02', kicker: 'Behovsanalys', title: ['Sen ', <em key="e">förstår</em>, ' vi.'], desc: 'Grundlig genomgång av hur ni arbetar idag — och hur ni vill arbeta imorgon. Ett förslag som motsvarar era förväntningar.' },
+  { num: '03', kicker: 'Leverans', title: ['Sen ', <em key="e">levererar</em>, ' vi.'], desc: 'Våra egna tekniker installerar — med fokus på noggrannhet, precision och uppföljning. Inga underleverantörer.' },
+];
 
-      {/* Header — same pattern as Services */}
+const Process = () => (
+  <section className="process-section" id="process">
+    <div className="process-section-inner">
       <div className="services-header reveal" style={{ marginBottom: 40 }}>
         <div style={{ gridColumn: '1 / -1' }}>
-          <div className="eyebrow">03 — Hur går det till</div>
-          <h2 style={{
-            fontFamily: 'var(--serif)', fontWeight: 300,
-            fontSize: 'clamp(44px, 6.5vw, 96px)', lineHeight: 0.95,
-            letterSpacing: '-0.025em', margin: '16px 0 0',
-            fontVariationSettings: '"SOFT" 50, "opsz" 144',
-            whiteSpace: 'nowrap',
-          }}>En process i <em>tre</em> steg.</h2>
+          <div className="section-num">
+            <span className="accent">03</span>
+            <span className="of">/ OF 08</span>
+            <span>· Hur går det till</span>
+          </div>
+          <h2 style={{ marginTop: 16 }}>En process i <em>tre</em> steg.</h2>
         </div>
       </div>
 
-      {/* Cards */}
-      <div className="reveal" style={{
-        display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: 20,
-        borderTop: '1px solid color-mix(in oklch, var(--ink) 15%, transparent)',
-        paddingTop: 40,
-      }}>
-        {[
-          { num: '01', kicker: 'Avstämning', title: ['Vi lyssnar ', <em key="e">först</em>, '.'], desc: 'Digitalt eller fysiskt möte där vi går igenom era behov och tillsammans sätter en plan efter era krav och önskemål.' },
-          { num: '02', kicker: 'Behovsanalys', title: ['Sen ', <em key="e">förstår</em>, ' vi.'], desc: 'Grundlig genomgång av hur ni arbetar idag — och hur ni vill arbeta imorgon. Ett förslag som motsvarar era förväntningar.' },
-          { num: '03', kicker: 'Leverans', title: ['Sen ', <em key="e">levererar</em>, ' vi.'], desc: 'Våra egna tekniker installerar — med fokus på noggrannhet, precision och uppföljning. Inga underleverantörer.' },
-        ].map((s) => (
-          <div key={s.num} style={{
-            background: 'var(--cream-2)',
-            border: '1px solid color-mix(in oklch, var(--ink) 10%, transparent)',
-            borderRadius: 8,
-            padding: '40px 32px',
-            display: 'flex', flexDirection: 'column', gap: 16,
-            minHeight: 300,
-          }}>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.14em', color: 'var(--rose)' }}>{s.num}</span>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--ink-mute)', marginTop: 'auto' }}>{s.kicker}</span>
-            <h3 style={{
-              fontFamily: 'var(--serif)', fontWeight: 300,
-              fontSize: 'clamp(30px, 2.6vw, 40px)', lineHeight: 1,
-              letterSpacing: '-0.02em', margin: 0,
-              fontVariationSettings: '"SOFT" 50, "opsz" 96',
-              color: 'var(--ink)',
-            }}>{s.title}</h3>
-            <p style={{ fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-soft)', margin: 0 }}>{s.desc}</p>
+      <div className="process-grid reveal">
+        {PROCESS_STEPS.map((s) => (
+          <div key={s.num} className="process-card">
+            <span className="process-num">{s.num}</span>
+            <span className="process-kicker">{s.kicker}</span>
+            <h3 className="process-card-title">{s.title}</h3>
+            <p className="process-card-desc">{s.desc}</p>
           </div>
         ))}
       </div>
-
     </div>
   </section>
 );
