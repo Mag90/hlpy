@@ -338,6 +338,69 @@ const MicShape = ({ device }) => {
   );
 };
 
+const PortBoard = ({ device, isFilled }) => {
+  if (!device.ports.length) return null;
+  const xs = device.ports.map(p => p.cx);
+  const ys = device.ports.map(p => p.cy);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+
+  const padX = 14;
+  const padY = 18;
+  const slotW = 16, slotH = 12;
+  const labelGap = 22;
+
+  const x = minX - slotW / 2 - padX;
+  const y = minY - slotH / 2 - padY;
+  const w = (maxX - minX) + slotW + padX * 2;
+  const h = (maxY - minY) + slotH + padY * 2;
+
+  return (
+    <g>
+      {/* Label above panel */}
+      <text
+        x={x + w / 2} y={y - 10}
+        textAnchor="middle"
+        fontFamily="JetBrains Mono, monospace"
+        fontSize="9"
+        fill="oklch(0.45 0.012 250)"
+        letterSpacing="0.16em"
+      >
+        DRA SLADDARNA HIT
+      </text>
+      {/* Tick marks bracketing label */}
+      <line x1={x + w / 2 - 80} y1={y - 7} x2={x + w / 2 - 70} y2={y - 7} stroke="oklch(0.55 0.012 250)" strokeWidth="0.8" />
+      <line x1={x + w / 2 + 70} y1={y - 7} x2={x + w / 2 + 80} y2={y - 7} stroke="oklch(0.55 0.012 250)" strokeWidth="0.8" />
+      {/* Panel chassis */}
+      <rect
+        x={x} y={y}
+        width={w} height={h}
+        rx={6}
+        fill="oklch(0.92 0.010 250)"
+        stroke="oklch(0.55 0.012 250)"
+        strokeWidth="1"
+      />
+      {/* Inner inset */}
+      <rect
+        x={x + 4} y={y + 4}
+        width={w - 8} height={h - 8}
+        rx={4}
+        fill="oklch(0.88 0.010 250)"
+        stroke="oklch(0.65 0.012 250)"
+        strokeWidth="0.5"
+        strokeDasharray="0"
+      />
+      {/* Corner screw dots */}
+      <circle cx={x + 7} cy={y + 7} r={1.4} fill="oklch(0.55 0.012 250)" />
+      <circle cx={x + w - 7} cy={y + 7} r={1.4} fill="oklch(0.55 0.012 250)" />
+      <circle cx={x + 7} cy={y + h - 7} r={1.4} fill="oklch(0.55 0.012 250)" />
+      <circle cx={x + w - 7} cy={y + h - 7} r={1.4} fill="oklch(0.55 0.012 250)" />
+    </g>
+  );
+};
+
 const DeviceShape = ({ device, highlight }) => {
   const inner = (() => {
     switch (device.type) {
@@ -613,6 +676,11 @@ const CableGame = () => {
             {/* Devices */}
             {level.devices.map(d => (
               <DeviceShape key={d.id} device={d} highlight={deviceHighlight(d)} />
+            ))}
+
+            {/* Port boards — generic panel grouping the slots per device */}
+            {level.devices.map(d => (
+              <PortBoard key={`board-${d.id}`} device={d} />
             ))}
 
             {/* Empty port slots — show locations + count, no labels */}
