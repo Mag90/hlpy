@@ -124,13 +124,13 @@ const Checkout = ({ cart, onBack }) => {
       </div>
 
       <div style={{
-        background: 'var(--studio-2)', border: '1px solid var(--hairline-on-dark)',
+        background: 'var(--cream-2)', border: '1px solid var(--hairline)',
         borderRadius: 8, padding: '24px 28px',
       }}>
         {items.map(({ product, qty }) => (
           <div key={product.id} style={{
             display: 'flex', justifyContent: 'space-between',
-            padding: '12px 0', borderBottom: '1px solid var(--hairline-on-dark)',
+            padding: '12px 0', borderBottom: '1px solid var(--hairline)',
             fontSize: 14,
           }}>
             <span>{product.name} <span style={{ opacity: 0.6 }}>× {qty}</span></span>
@@ -147,7 +147,7 @@ const Checkout = ({ cart, onBack }) => {
         <div style={{
           display: 'flex', justifyContent: 'space-between',
           padding: '16px 0 0', marginTop: 8,
-          borderTop: '1px solid var(--hairline-on-dark)',
+          borderTop: '1px solid var(--hairline)',
           fontSize: 18,
         }}>
           <span style={{
@@ -161,24 +161,24 @@ const Checkout = ({ cart, onBack }) => {
 
       <div style={{ display: 'grid', gap: 14 }}>
         <input placeholder="E-post" style={{
-          background: 'var(--studio-2)', border: '1px solid var(--hairline-on-dark)',
-          color: 'var(--cream)', padding: '14px 18px', borderRadius: 8, fontSize: 14,
+          background: 'var(--cream-2)', border: '1px solid var(--hairline)',
+          color: 'var(--ink)', padding: '14px 18px', borderRadius: 8, fontSize: 14,
           fontFamily: 'inherit',
         }} />
         <input placeholder="Adress" style={{
-          background: 'var(--studio-2)', border: '1px solid var(--hairline-on-dark)',
-          color: 'var(--cream)', padding: '14px 18px', borderRadius: 8, fontSize: 14,
+          background: 'var(--cream-2)', border: '1px solid var(--hairline)',
+          color: 'var(--ink)', padding: '14px 18px', borderRadius: 8, fontSize: 14,
           fontFamily: 'inherit',
         }} />
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
           <input placeholder="Postnummer" style={{
-            background: 'var(--studio-2)', border: '1px solid var(--hairline-on-dark)',
-            color: 'var(--cream)', padding: '14px 18px', borderRadius: 8, fontSize: 14,
+            background: 'var(--cream-2)', border: '1px solid var(--hairline)',
+            color: 'var(--ink)', padding: '14px 18px', borderRadius: 8, fontSize: 14,
             fontFamily: 'inherit',
           }} />
           <input placeholder="Stad" style={{
-            background: 'var(--studio-2)', border: '1px solid var(--hairline-on-dark)',
-            color: 'var(--cream)', padding: '14px 18px', borderRadius: 8, fontSize: 14,
+            background: 'var(--cream-2)', border: '1px solid var(--hairline)',
+            color: 'var(--ink)', padding: '14px 18px', borderRadius: 8, fontSize: 14,
             fontFamily: 'inherit',
           }} />
         </div>

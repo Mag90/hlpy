@@ -217,10 +217,10 @@ const CableGame = () => {
             {/* Background grid lines for "studio" feel */}
             <defs>
               <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(60,40,40,0.06)" strokeWidth="1" />
               </pattern>
               <radialGradient id="glow" cx="50%" cy="50%" r="60%">
-                <stop offset="0%"  stopColor="oklch(0.58 0.19 15 / 0.18)" />
+                <stop offset="0%"  stopColor="oklch(0.58 0.19 15 / 0.10)" />
                 <stop offset="100%" stopColor="oklch(0.58 0.19 15 / 0)" />
               </radialGradient>
             </defs>
@@ -233,8 +233,8 @@ const CableGame = () => {
                 x={PANEL.x} y={PANEL.y}
                 width={PANEL.w} height={PANEL.h}
                 rx={6}
-                fill="oklch(0.20 0.015 250)"
-                stroke="oklch(0.40 0.012 250)"
+                fill="oklch(0.96 0.012 50)"
+                stroke="oklch(0.70 0.012 250)"
                 strokeWidth="1.5"
               />
               {/* Inset screen */}
@@ -242,7 +242,7 @@ const CableGame = () => {
                 x={PANEL.x + 16} y={PANEL.y + 16}
                 width={PANEL.w - 32} height={PANEL.h - 32}
                 rx={3}
-                fill="oklch(0.16 0.01 250)"
+                fill="oklch(0.20 0.012 250)"
               />
               {/* Screen content — abstract */}
               <text
@@ -250,12 +250,12 @@ const CableGame = () => {
                 textAnchor="middle"
                 fontFamily="JetBrains Mono, monospace"
                 fontSize="11"
-                fill="oklch(0.72 0.14 65 / 0.8)"
+                fill="oklch(0.72 0.14 65 / 0.85)"
                 letterSpacing="0.2em"
               >
                 CONFERENCE BAR · STANDBY
               </text>
-              <circle cx={PANEL.x + PANEL.w - 30} cy={PANEL.y + 30} r={4} fill="oklch(0.72 0.14 65)" opacity="0.8" />
+              <circle cx={PANEL.x + PANEL.w - 30} cy={PANEL.y + 30} r={4} fill="oklch(0.72 0.14 65)" opacity="0.9" />
 
               {/* Camera bar above */}
               <rect
@@ -264,21 +264,21 @@ const CableGame = () => {
                 width={PANEL.w * 0.5}
                 height={20}
                 rx={4}
-                fill="oklch(0.22 0.015 250)"
-                stroke="oklch(0.40 0.012 250)"
+                fill="oklch(0.96 0.012 50)"
+                stroke="oklch(0.70 0.012 250)"
                 strokeWidth="1"
               />
               <circle
                 cx={PANEL.x + PANEL.w / 2} cy={PANEL.y - 14}
                 r={5}
-                fill="oklch(0.16 0.01 250)"
+                fill="oklch(0.20 0.012 250)"
                 stroke="oklch(0.58 0.19 15)"
                 strokeWidth="1.2"
               />
 
               {/* Stand */}
-              <rect x={PANEL.x + PANEL.w / 2 - 4} y={PANEL.y + PANEL.h} width={8} height={50} fill="oklch(0.22 0.015 250)" />
-              <rect x={PANEL.x + PANEL.w / 2 - 80} y={PANEL.y + PANEL.h + 50} width={160} height={6} rx={2} fill="oklch(0.22 0.015 250)" />
+              <rect x={PANEL.x + PANEL.w / 2 - 4} y={PANEL.y + PANEL.h} width={8} height={50} fill="oklch(0.92 0.012 50)" stroke="oklch(0.70 0.012 250)" strokeWidth="0.8" />
+              <rect x={PANEL.x + PANEL.w / 2 - 80} y={PANEL.y + PANEL.h + 50} width={160} height={6} rx={2} fill="oklch(0.92 0.012 50)" stroke="oklch(0.70 0.012 250)" strokeWidth="0.8" />
             </g>
 
             {/* Ports */}
@@ -287,8 +287,8 @@ const CableGame = () => {
               const isCorrectTarget = draggedCable && draggedCable.correctPort === p.id;
               const isHovered = hoveredPort === p.id && dragging;
               const ringColor = isHovered && isCorrectTarget
-                ? 'oklch(0.72 0.16 145)'
-                : (isHovered ? 'oklch(0.58 0.19 15)' : 'oklch(0.40 0.012 250)');
+                ? 'oklch(0.62 0.16 145)'
+                : (isHovered ? 'oklch(0.58 0.19 15)' : 'oklch(0.65 0.012 250)');
               return (
                 <g key={p.id}>
                   {/* Pulsing hit ring while dragging */}
@@ -308,8 +308,8 @@ const CableGame = () => {
                     x={p.cx - 8} y={p.cy - 6}
                     width={16} height={12}
                     rx={1.5}
-                    fill="oklch(0.10 0.005 250)"
-                    stroke="oklch(0.45 0.012 250)"
+                    fill="oklch(0.18 0.012 250)"
+                    stroke="oklch(0.60 0.012 250)"
                     strokeWidth="1"
                   />
                   {/* Port label */}
@@ -317,7 +317,7 @@ const CableGame = () => {
                     x={p.cx + 18} y={p.cy + 3.5}
                     fontFamily="JetBrains Mono, monospace"
                     fontSize="9"
-                    fill="oklch(0.70 0.012 250)"
+                    fill="oklch(0.45 0.012 250)"
                     letterSpacing="0.15em"
                   >
                     {p.label}
@@ -330,14 +330,14 @@ const CableGame = () => {
             <line
               x1={80} y1={TRAY_Y + 30}
               x2={VIEW_W - 80} y2={TRAY_Y + 30}
-              stroke="oklch(0.30 0.012 250)"
+              stroke="oklch(0.65 0.012 250)"
               strokeWidth="1"
             />
             <text
               x={80} y={TRAY_Y + 56}
               fontFamily="JetBrains Mono, monospace"
               fontSize="9"
-              fill="oklch(0.50 0.012 250)"
+              fill="oklch(0.45 0.012 250)"
               letterSpacing="0.18em"
             >
               KABEL-LÅDA · DRA UPP TILL RÄTT PORT
@@ -379,8 +379,8 @@ const CableGame = () => {
                     x={start.x - 16} y={start.y - 4}
                     width={32} height={28}
                     rx={3}
-                    fill="oklch(0.22 0.015 250)"
-                    stroke="oklch(0.35 0.012 250)"
+                    fill="oklch(0.92 0.012 50)"
+                    stroke="oklch(0.65 0.012 250)"
                     strokeWidth="1"
                   />
                   <text
@@ -388,7 +388,7 @@ const CableGame = () => {
                     textAnchor="middle"
                     fontFamily="JetBrains Mono, monospace"
                     fontSize="9"
-                    fill="oklch(0.65 0.012 250)"
+                    fill="oklch(0.45 0.012 250)"
                     letterSpacing="0.12em"
                   >
                     {def.label}
@@ -439,7 +439,7 @@ const CableGame = () => {
 
         {/* Mobile fallback */}
         <div className="game-mobile-fallback">
-          <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 28, marginBottom: 12, color: 'var(--rose-soft)' }}>Spela på dator</div>
+          <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 28, marginBottom: 12, color: 'var(--rose)', textTransform: 'none' }}>Spela på dator</div>
           <div>Mobilen blir trång. Öppna sajten på datorn för fullupplevelsen.</div>
         </div>
       </div>

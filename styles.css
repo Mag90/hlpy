@@ -57,8 +57,8 @@ html {
 }
 
 body {
-  background: var(--studio);
-  color: var(--cream);
+  background: var(--cream);
+  color: var(--ink);
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.45;
@@ -131,7 +131,7 @@ body {
 }
 
 .nav.scrolled {
-  background: color-mix(in oklch, var(--studio) 78%, transparent);
+  background: color-mix(in oklch, var(--cream) 78%, transparent);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
 }
@@ -150,16 +150,15 @@ body {
 .nav-logo-image {
   height: 32px;
   width: auto;
-  filter: invert(1) brightness(1.1);
 }
 
 .nav-links {
   display: flex;
   align-items: center;
   gap: 4px;
-  background: color-mix(in oklch, var(--studio-2) 70%, transparent);
+  background: color-mix(in oklch, var(--cream-2) 70%, transparent);
   backdrop-filter: blur(12px);
-  border: 1px solid var(--hairline-on-dark);
+  border: 1px solid var(--hairline);
   border-radius: 999px;
   padding: 5px;
 }
@@ -167,7 +166,7 @@ body {
 .nav-link {
   font-size: 13.5px;
   font-weight: 500;
-  color: var(--cream);
+  color: var(--ink);
   padding: 9px 16px;
   border-radius: 999px;
   text-decoration: none;
@@ -179,7 +178,7 @@ body {
 }
 
 .nav-link:hover {
-  background: color-mix(in oklch, var(--cream) 8%, transparent);
+  background: color-mix(in oklch, var(--ink) 6%, transparent);
 }
 
 .nav-cta {
@@ -209,8 +208,8 @@ body {
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  background: var(--studio);
-  color: var(--cream);
+  background: var(--cream);
+  color: var(--ink);
 }
 
 .hero-canvas {
@@ -233,7 +232,131 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 48px;
+  gap: 28px;
+  padding-top: 40px;
+  text-align: center;
+  align-items: center;
+}
+
+.hero-inner .hero-eyebrow-row {
+  justify-content: center;
+}
+
+.hero-inner h1 {
+  text-align: center;
+  max-width: 18ch;
+}
+
+.hero-inner .hero-sub {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 56ch;
+  font-size: 18px;
+}
+
+/* Hero stage — central AV equipment composition */
+.hero-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 24px auto 0;
+  aspect-ratio: 900 / 520;
+}
+
+.hero-stage-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hero-spec-card {
+  position: absolute;
+  background: color-mix(in oklch, var(--cream) 92%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  padding: 12px 16px;
+  text-align: left;
+  box-shadow: 0 16px 40px -16px color-mix(in oklch, var(--ink) 30%, transparent);
+  z-index: 5;
+  font-family: var(--mono);
+}
+
+.hero-spec-card__label {
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 4px;
+}
+
+.hero-spec-card__value {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.hero-spec-card__value span {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-mute);
+  margin-left: 4px;
+}
+
+.hero-spec-card__value--small {
+  font-size: 13px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.005em;
+}
+
+.hero-spec-card__sub {
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: 4px;
+}
+
+.hero-spec-card--tl {
+  top: 12%;
+  left: -6%;
+}
+
+.hero-spec-card--tr {
+  top: 18%;
+  right: -4%;
+}
+
+.hero-spec-card--br {
+  bottom: 8%;
+  right: -2%;
+}
+
+@media (max-width: 1100px) {
+  .hero-spec-card--tl {
+    left: 2%;
+  }
+
+  .hero-spec-card--tr {
+    right: 2%;
+  }
+
+  .hero-spec-card--br {
+    right: 4%;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-spec-card {
+    display: none;
+  }
 }
 
 .hero-eyebrow-row {
@@ -244,7 +367,7 @@ body {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 65%, transparent);
+  color: var(--ink-mute);
 }
 
 .hero-eyebrow-row .dot {
@@ -272,40 +395,42 @@ body {
 .hero h1 {
   font-family: var(--sans);
   font-weight: 700;
-  font-size: clamp(54px, 9vw, 148px);
+  font-size: clamp(48px, 8vw, 120px);
   line-height: 0.92;
   letter-spacing: -0.04em;
   margin: 0;
-  max-width: 14ch;
-  color: var(--cream);
+  color: var(--ink);
+  text-transform: lowercase;
+  text-wrap: balance;
 }
 
 .hero h1 em {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 300;
-  color: var(--rose-soft);
+  color: var(--rose);
   font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  text-transform: none;
 }
 
 .hero-foot {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  justify-content: space-between;
   gap: 40px;
-  align-items: end;
-  padding-top: 48px;
+  align-items: center;
+  padding-top: 32px;
   max-width: var(--maxw);
-  margin: 0 auto;
+  margin: 32px auto 0;
   width: 100%;
-  border-top: 1px solid var(--hairline-on-dark);
+  border-top: 1px solid var(--hairline);
 }
 
 .hero-sub {
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.5;
-  color: color-mix(in oklch, var(--cream) 75%, transparent);
+  color: var(--ink-soft);
   max-width: 38ch;
 }
 
@@ -314,7 +439,7 @@ body {
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 55%, transparent);
+  color: var(--ink-mute);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -322,7 +447,7 @@ body {
 }
 
 .hero-meta .value {
-  color: var(--cream);
+  color: var(--ink);
   font-size: 14px;
   letter-spacing: 0;
   text-transform: none;
@@ -339,7 +464,7 @@ body {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 65%, transparent);
+  color: var(--ink-mute);
 }
 
 .hero-scroll .arrow {
@@ -375,15 +500,15 @@ body {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 70%, transparent);
+  color: var(--ink);
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
-  border: 1px solid var(--hairline-on-dark);
+  border: 1px solid var(--hairline);
   border-radius: 4px;
-  background: color-mix(in oklch, var(--studio) 60%, transparent);
-  backdrop-filter: blur(6px);
+  background: color-mix(in oklch, var(--cream) 80%, transparent);
+  backdrop-filter: blur(8px);
 }
 
 .hero-plate-label .rec {
@@ -396,11 +521,11 @@ body {
 
 /* ----- Marquee ----- */
 .marquee {
-  border-top: 1px solid var(--hairline-on-dark);
-  border-bottom: 1px solid var(--hairline-on-dark);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
   padding: 22px 0;
   overflow: hidden;
-  background: var(--studio);
+  background: var(--cream);
   position: relative;
   z-index: 3;
 }
@@ -420,7 +545,7 @@ body {
   font-family: var(--serif);
   font-size: 22px;
   font-style: italic;
-  color: var(--cream);
+  color: var(--ink);
   font-variation-settings: "SOFT" 100, "WONK" 1;
 }
 
@@ -576,8 +701,8 @@ body {
 /* ----- Capability grid ----- */
 .capability {
   padding: 120px var(--gutter);
-  background: var(--studio);
-  color: var(--cream);
+  background: var(--cream-cool);
+  color: var(--ink);
   position: relative;
   overflow: hidden;
 }
@@ -594,7 +719,7 @@ body {
 }
 
 .capability .eyebrow {
-  color: color-mix(in oklch, var(--cream) 60%, transparent);
+  color: var(--ink-mute);
 }
 
 .capability h3 {
@@ -610,14 +735,14 @@ body {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 300;
-  color: var(--rose-soft);
+  color: var(--rose);
   font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
 }
 
 .capability p {
   font-size: 17px;
   line-height: 1.55;
-  color: color-mix(in oklch, var(--cream) 75%, transparent);
+  color: var(--ink-soft);
   max-width: 48ch;
   margin: 0 0 32px;
 }
@@ -626,7 +751,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px 40px;
-  border-top: 1px solid color-mix(in oklch, var(--cream) 15%, transparent);
+  border-top: 1px solid var(--hairline);
   padding-top: 32px;
 }
 
@@ -641,7 +766,7 @@ body {
 
 .capability-stat .num em {
   font-style: italic;
-  color: var(--rose-soft);
+  color: var(--rose);
   font-weight: 300;
   padding: 0 0.05em;
 }
@@ -737,7 +862,7 @@ body {
 .team-list {
   margin-top: 40px;
   padding-top: 32px;
-  border-top: 1px solid color-mix(in oklch, var(--cream) 15%, transparent);
+  border-top: 1px solid var(--hairline);
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 20px 16px;
@@ -780,8 +905,8 @@ body {
 }
 
 .team-avatar-add {
-  border: 1px dashed color-mix(in oklch, var(--cream) 30%, transparent);
-  color: color-mix(in oklch, var(--cream) 60%, transparent);
+  border: 1px dashed color-mix(in oklch, var(--ink) 25%, transparent);
+  color: var(--ink-mute);
   font-style: normal;
   font-family: var(--sans);
   font-weight: 300;
@@ -794,7 +919,7 @@ body {
   font-weight: 300;
   letter-spacing: -0.01em;
   line-height: 1.15;
-  color: var(--cream);
+  color: var(--ink);
 }
 
 .team-role {
@@ -802,7 +927,7 @@ body {
   font-size: 9.5px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 55%, transparent);
+  color: var(--ink-mute);
 }
 
 @media (max-width: 860px) {
@@ -820,7 +945,7 @@ body {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 55%, transparent);
+  color: var(--ink-mute);
   margin-top: 10px;
 }
 
@@ -830,7 +955,7 @@ body {
   width: 100%;
   border-radius: 4px;
   overflow: hidden;
-  background: var(--studio-2);
+  background: var(--ink);
 }
 
 .capability-visual canvas {
@@ -847,7 +972,7 @@ body {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 75%, transparent);
+  color: color-mix(in oklch, var(--cream) 80%, transparent);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -946,9 +1071,9 @@ body {
 /* ----- Footer ----- */
 .footer {
   padding: 100px var(--gutter) 40px;
-  background: var(--studio);
-  color: var(--cream);
-  border-top: 1px solid var(--hairline-on-dark);
+  background: var(--cream);
+  color: var(--ink);
+  border-top: 1px solid var(--hairline);
 }
 
 .footer-inner {
@@ -963,22 +1088,25 @@ body {
   line-height: 1.05;
   letter-spacing: -0.04em;
   margin: 0 0 60px;
-  color: var(--cream);
+  color: var(--ink);
+  text-transform: lowercase;
 }
 
 .footer-cta em {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 300;
-  color: var(--rose-soft);
+  color: var(--rose);
   font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  text-transform: none;
 }
 
 .footer-cta a {
   color: inherit;
   text-decoration: none;
-  border-bottom: 2px solid color-mix(in oklch, var(--cream) 30%, transparent);
+  border-bottom: 2px solid color-mix(in oklch, var(--ink) 25%, transparent);
   transition: border-color 0.2s;
+  text-transform: none;
 }
 
 .footer-cta a:hover {
@@ -990,7 +1118,7 @@ body {
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 40px;
   padding: 40px 0;
-  border-top: 1px solid var(--hairline-on-dark);
+  border-top: 1px solid var(--hairline);
 }
 
 .footer-col h4 {
@@ -998,7 +1126,7 @@ body {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 55%, transparent);
+  color: var(--ink-mute);
   font-weight: 500;
   margin: 0 0 16px;
 }
@@ -1007,7 +1135,7 @@ body {
 .footer-col p {
   display: block;
   font-size: 14px;
-  color: color-mix(in oklch, var(--cream) 85%, transparent);
+  color: var(--ink);
   text-decoration: none;
   margin: 0 0 6px;
   transition: color 0.2s;
@@ -1026,7 +1154,6 @@ body {
 .footer-logo-image {
   height: 64px;
   width: auto;
-  filter: invert(1) brightness(1.1);
 }
 
 .footer-bottom {
@@ -1034,11 +1161,11 @@ body {
   justify-content: space-between;
   align-items: center;
   padding-top: 32px;
-  border-top: 1px solid var(--hairline-on-dark);
+  border-top: 1px solid var(--hairline);
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.08em;
-  color: color-mix(in oklch, var(--cream) 55%, transparent);
+  color: var(--ink-mute);
   text-transform: uppercase;
 }
 
@@ -1059,13 +1186,13 @@ body {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  background: var(--studio-2);
-  color: var(--cream);
-  border: 1px solid var(--hairline-on-dark);
+  background: var(--cream);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
   border-radius: 14px;
   padding: 18px 20px;
   width: 280px;
-  box-shadow: 0 20px 60px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 60px -12px color-mix(in oklch, var(--ink) 30%, transparent);
   z-index: 200;
   font-family: var(--sans);
   display: none;
@@ -1105,13 +1232,14 @@ body {
 }
 
 .tweak-row label {
-  color: color-mix(in oklch, var(--cream) 70%, transparent);
+  font-size: 12px;
+  color: var(--ink-soft);
 }
 
 .tweak-row .opts {
   display: flex;
   gap: 4px;
-  background: var(--studio);
+  background: var(--cream-2);
   padding: 3px;
   border-radius: 8px;
 }
@@ -1124,7 +1252,7 @@ body {
   background: transparent;
   border-radius: 6px;
   cursor: pointer;
-  color: color-mix(in oklch, var(--cream) 70%, transparent);
+  color: var(--ink-soft);
   font-family: var(--sans);
   transition: all 0.15s;
 }
@@ -1281,9 +1409,10 @@ body {
    ========================================================================== */
 .references {
   padding: 160px var(--gutter) 140px;
-  background: var(--studio);
-  color: var(--cream);
+  background: var(--cream);
+  color: var(--ink);
   position: relative;
+  border-top: 1px solid var(--hairline);
 }
 
 .references-inner {
@@ -1308,20 +1437,22 @@ body {
   margin: 0;
   max-width: 14ch;
   text-wrap: balance;
+  text-transform: lowercase;
 }
 
 .references-header h2 em {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 300;
-  color: var(--rose-soft);
+  color: var(--rose);
   font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  text-transform: none;
 }
 
 .references-header p {
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.55;
-  color: color-mix(in oklch, var(--cream) 75%, transparent);
+  color: var(--ink-soft);
   max-width: 46ch;
   margin: 0;
 }
@@ -1422,10 +1553,11 @@ body {
    ========================================================================== */
 .game {
   padding: 160px var(--gutter) 140px;
-  background: var(--studio);
-  color: var(--cream);
+  background: var(--cream-cool);
+  color: var(--ink);
   position: relative;
   overflow: hidden;
+  border-top: 1px solid var(--hairline);
 }
 
 .game::before {
@@ -1433,8 +1565,8 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 25% 30%, color-mix(in oklch, var(--rose) 14%, transparent), transparent 55%),
-    radial-gradient(ellipse at 80% 70%, color-mix(in oklch, var(--studio-2) 90%, transparent), transparent 60%);
+    radial-gradient(ellipse at 25% 30%, color-mix(in oklch, var(--rose) 10%, transparent), transparent 55%),
+    radial-gradient(ellipse at 80% 70%, color-mix(in oklch, var(--amber) 6%, transparent), transparent 60%);
   pointer-events: none;
 }
 
@@ -1461,20 +1593,22 @@ body {
   letter-spacing: -0.035em;
   margin: 0;
   text-wrap: balance;
+  text-transform: lowercase;
 }
 
 .game-header h2 em {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 300;
-  color: var(--rose-soft);
+  color: var(--rose);
   font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  text-transform: none;
 }
 
 .game-header p {
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.55;
-  color: color-mix(in oklch, var(--cream) 75%, transparent);
+  color: var(--ink-soft);
   max-width: 46ch;
   margin: 0;
 }
@@ -1483,13 +1617,14 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 1000 / 700;
-  background: var(--studio-2);
-  border: 1px solid var(--hairline-on-dark);
+  background: var(--cream);
+  border: 1px solid var(--hairline);
   border-radius: 12px;
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
   touch-action: none;
+  box-shadow: 0 30px 80px -30px color-mix(in oklch, var(--ink) 30%, transparent);
 }
 
 .game-svg {
@@ -1518,13 +1653,13 @@ body {
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 65%, transparent);
+  color: var(--ink-mute);
 }
 
 .game-result {
   position: absolute;
   inset: 0;
-  background: color-mix(in oklch, var(--studio) 95%, transparent);
+  background: color-mix(in oklch, var(--cream) 92%, transparent);
   backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
@@ -1549,7 +1684,7 @@ body {
   font-weight: 300;
   font-size: clamp(60px, 9vw, 132px);
   line-height: 1;
-  color: var(--rose-soft);
+  color: var(--rose);
   font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
 }
 
@@ -1591,12 +1726,12 @@ body {
 
 .game-btn.secondary {
   background: transparent;
-  border-color: var(--hairline-on-dark);
-  color: var(--cream);
+  border-color: var(--hairline);
+  color: var(--ink);
 }
 
 .game-btn.secondary:hover {
-  border-color: color-mix(in oklch, var(--cream) 40%, transparent);
+  border-color: color-mix(in oklch, var(--ink) 30%, transparent);
 }
 
 @media (max-width: 860px) {
@@ -1612,14 +1747,14 @@ body {
 
   .game-mobile-fallback {
     display: block;
-    border: 1px solid var(--hairline-on-dark);
+    border: 1px solid var(--hairline);
     border-radius: 12px;
     aspect-ratio: 4 / 3;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: var(--studio-2);
+    background: var(--cream);
   }
 }
 
@@ -1630,8 +1765,8 @@ body {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: var(--studio);
-  color: var(--cream);
+  background: var(--cream);
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   opacity: 0;
@@ -1663,8 +1798,8 @@ body.shop-open .marketing-site {
   align-items: center;
   gap: 24px;
   padding: 18px var(--gutter);
-  border-bottom: 1px solid var(--hairline-on-dark);
-  background: color-mix(in oklch, var(--studio) 92%, transparent);
+  border-bottom: 1px solid var(--hairline);
+  background: color-mix(in oklch, var(--cream) 90%, transparent);
   backdrop-filter: blur(20px);
   position: sticky;
   top: 0;
@@ -1676,19 +1811,19 @@ body.shop-open .marketing-site {
   font-weight: 700;
   font-size: 20px;
   letter-spacing: -0.04em;
-  color: var(--cream);
+  color: var(--ink);
   text-decoration: none;
 }
 
 .shop-bar-search {
   flex: 1;
   max-width: 480px;
-  background: var(--studio-2);
-  border: 1px solid var(--hairline-on-dark);
+  background: var(--cream-2);
+  border: 1px solid var(--hairline);
   border-radius: 999px;
   padding: 10px 18px;
   font-size: 13.5px;
-  color: var(--cream);
+  color: var(--ink);
   font-family: inherit;
 }
 
@@ -1698,12 +1833,12 @@ body.shop-open .marketing-site {
 }
 
 .shop-bar-cart {
-  background: var(--studio-2);
-  border: 1px solid var(--hairline-on-dark);
+  background: var(--cream-2);
+  border: 1px solid var(--hairline);
   border-radius: 999px;
   padding: 10px 18px;
   font-size: 13.5px;
-  color: var(--cream);
+  color: var(--ink);
   cursor: pointer;
   font-family: inherit;
   display: inline-flex;
@@ -1713,7 +1848,7 @@ body.shop-open .marketing-site {
 }
 
 .shop-bar-cart:hover {
-  border-color: color-mix(in oklch, var(--cream) 30%, transparent);
+  border-color: color-mix(in oklch, var(--ink) 25%, transparent);
 }
 
 .shop-bar-cart .badge {
@@ -1729,11 +1864,11 @@ body.shop-open .marketing-site {
 
 .shop-bar-close {
   background: transparent;
-  border: 1px solid var(--hairline-on-dark);
+  border: 1px solid var(--hairline);
   border-radius: 999px;
   padding: 10px 14px;
   font-size: 13.5px;
-  color: var(--cream);
+  color: var(--ink);
   cursor: pointer;
   font-family: inherit;
   margin-left: auto;
@@ -1754,7 +1889,7 @@ body.shop-open .marketing-site {
 }
 
 .shop-rail {
-  border-right: 1px solid var(--hairline-on-dark);
+  border-right: 1px solid var(--hairline);
   padding: 32px var(--gutter);
   overflow-y: auto;
 }
@@ -1764,7 +1899,7 @@ body.shop-open .marketing-site {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 55%, transparent);
+  color: var(--ink-mute);
   margin: 0 0 16px;
   font-weight: 500;
 }
@@ -1775,7 +1910,7 @@ body.shop-open .marketing-site {
   text-align: left;
   background: transparent;
   border: none;
-  color: color-mix(in oklch, var(--cream) 80%, transparent);
+  color: var(--ink-soft);
   padding: 8px 12px;
   font-size: 14px;
   border-radius: 6px;
@@ -1785,12 +1920,12 @@ body.shop-open .marketing-site {
 }
 
 .shop-rail .cat:hover {
-  background: var(--studio-2);
-  color: var(--cream);
+  background: var(--cream-2);
+  color: var(--ink);
 }
 
 .shop-rail .cat.active {
-  background: var(--studio-2);
+  background: var(--cream-2);
   color: var(--rose);
 }
 
@@ -1804,18 +1939,19 @@ body.shop-open .marketing-site {
 }
 
 .product-card {
-  background: var(--studio-2);
-  border: 1px solid var(--hairline-on-dark);
+  background: var(--cream);
+  border: 1px solid var(--hairline);
   border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.3s, transform 0.3s;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
 .product-card:hover {
   border-color: color-mix(in oklch, var(--rose) 40%, transparent);
   transform: translateY(-2px);
+  box-shadow: 0 20px 40px -20px color-mix(in oklch, var(--ink) 25%, transparent);
 }
 
 .product-image {
@@ -1842,7 +1978,7 @@ body.shop-open .marketing-site {
   font-family: var(--sans);
   font-weight: 600;
   font-size: 15px;
-  color: var(--cream);
+  color: var(--ink);
   line-height: 1.3;
 }
 
@@ -1851,7 +1987,7 @@ body.shop-open .marketing-site {
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 55%, transparent);
+  color: var(--ink-mute);
 }
 
 .product-price-row {
@@ -1867,7 +2003,7 @@ body.shop-open .marketing-site {
   font-style: italic;
   font-size: 18px;
   font-weight: 300;
-  color: var(--cream);
+  color: var(--ink);
 }
 
 .product-add {
@@ -1888,9 +2024,9 @@ body.shop-open .marketing-site {
 }
 
 .product-add.added {
-  background: var(--studio);
-  color: var(--rose-soft);
-  border: 1px solid var(--hairline-on-dark);
+  background: var(--cream-2);
+  color: var(--rose);
+  border: 1px solid var(--hairline);
 }
 
 .cart-drawer {
@@ -1900,14 +2036,14 @@ body.shop-open .marketing-site {
   bottom: 0;
   width: 380px;
   max-width: 100vw;
-  background: var(--studio-2);
-  border-left: 1px solid var(--hairline-on-dark);
+  background: var(--cream);
+  border-left: 1px solid var(--hairline);
   z-index: 110;
   transform: translateX(100%);
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   display: flex;
   flex-direction: column;
-  box-shadow: -30px 0 80px -20px rgba(0, 0, 0, 0.5);
+  box-shadow: -30px 0 80px -20px color-mix(in oklch, var(--ink) 25%, transparent);
 }
 
 .cart-drawer.open {
@@ -1916,7 +2052,7 @@ body.shop-open .marketing-site {
 
 .cart-head {
   padding: 22px 24px;
-  border-bottom: 1px solid var(--hairline-on-dark);
+  border-bottom: 1px solid var(--hairline);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1928,12 +2064,13 @@ body.shop-open .marketing-site {
   font-size: 18px;
   letter-spacing: -0.02em;
   margin: 0;
+  color: var(--ink);
 }
 
 .cart-close {
   background: transparent;
   border: none;
-  color: var(--cream);
+  color: var(--ink);
   font-size: 20px;
   cursor: pointer;
 }
@@ -1963,6 +2100,7 @@ body.shop-open .marketing-site {
   font-size: 13px;
   font-weight: 500;
   line-height: 1.3;
+  color: var(--ink);
 }
 
 .cart-item-meta {
@@ -1970,7 +2108,7 @@ body.shop-open .marketing-site {
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 55%, transparent);
+  color: var(--ink-mute);
   margin-top: 4px;
 }
 
@@ -1978,7 +2116,7 @@ body.shop-open .marketing-site {
   font-family: var(--serif);
   font-style: italic;
   font-size: 14px;
-  color: var(--cream);
+  color: var(--ink);
 }
 
 .cart-empty {
@@ -1988,12 +2126,12 @@ body.shop-open .marketing-site {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 55%, transparent);
+  color: var(--ink-mute);
 }
 
 .cart-foot {
   padding: 22px 24px;
-  border-top: 1px solid var(--hairline-on-dark);
+  border-top: 1px solid var(--hairline);
 }
 
 .cart-subtotal {
@@ -2008,7 +2146,7 @@ body.shop-open .marketing-site {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 60%, transparent);
+  color: var(--ink-mute);
 }
 
 .cart-subtotal .total {
@@ -2016,7 +2154,7 @@ body.shop-open .marketing-site {
   font-style: italic;
   font-size: 22px;
   font-weight: 300;
-  color: var(--cream);
+  color: var(--ink);
 }
 
 .cart-checkout {
@@ -2043,7 +2181,7 @@ body.shop-open .marketing-site {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--cream) 50%, transparent);
+  color: var(--ink-mute);
   text-align: center;
 }
 

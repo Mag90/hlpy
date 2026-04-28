@@ -41,15 +41,146 @@ const Nav = ({ onOpenShop }) => {
   );
 };
 
-const Hero = () => (
-  <section className="hero">
-    <HeroCanvas />
-    <div className="hero-plate">
-      <div className="hero-plate-label">
-        <span className="rec" />
-        <span>REEL · 001 — hlpy studio</span>
-      </div>
+const HeroStage = () => (
+  <div className="hero-stage">
+    <svg viewBox="0 0 900 520" preserveAspectRatio="xMidYMid meet" className="hero-stage-svg">
+      <defs>
+        <linearGradient id="display-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="oklch(0.22 0.012 250)" />
+          <stop offset="100%" stopColor="oklch(0.16 0.012 250)" />
+        </linearGradient>
+        <linearGradient id="bezel-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="oklch(0.96 0.012 50)" />
+          <stop offset="100%" stopColor="oklch(0.88 0.014 50)" />
+        </linearGradient>
+        <filter id="device-shadow" x="-10%" y="-10%" width="120%" height="130%">
+          <feDropShadow dx="0" dy="20" stdDeviation="20" floodColor="oklch(0.20 0.05 30)" floodOpacity="0.18" />
+        </filter>
+      </defs>
+
+      {/* Camera bar above */}
+      <g filter="url(#device-shadow)">
+        <rect x="320" y="50" width="260" height="22" rx="6" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
+        <circle cx="450" cy="61" r="4" fill="oklch(0.18 0.012 250)" />
+        <circle cx="450" cy="61" r="2" fill="oklch(0.58 0.19 15)" />
+        <circle cx="380" cy="61" r="1.2" fill="oklch(0.50 0.012 250)" />
+        <circle cx="520" cy="61" r="1.2" fill="oklch(0.50 0.012 250)" />
+      </g>
+
+      {/* Display panel */}
+      <g filter="url(#device-shadow)">
+        <rect x="180" y="80" width="540" height="320" rx="12" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
+        <rect x="196" y="96" width="508" height="288" rx="6" fill="url(#display-grad)" />
+        {/* Screen content — abstract meeting UI */}
+        <g>
+          {/* Top bar mock */}
+          <rect x="216" y="116" width="120" height="6" rx="3" fill="oklch(0.45 0.012 250 / 0.6)" />
+          <circle cx="680" cy="119" r="4" fill="oklch(0.72 0.16 145 / 0.9)" />
+          <text x="650" y="123" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="oklch(0.65 0.012 250)" textAnchor="end">LIVE</text>
+          {/* Three video tiles */}
+          <rect x="216" y="140" width="148" height="92" rx="4" fill="oklch(0.30 0.018 30 / 0.8)" />
+          <rect x="376" y="140" width="148" height="92" rx="4" fill="oklch(0.32 0.022 35 / 0.8)" />
+          <rect x="536" y="140" width="148" height="92" rx="4" fill="oklch(0.28 0.020 30 / 0.8)" />
+          {/* Avatars in tiles */}
+          <circle cx="290" cy="186" r="14" fill="oklch(0.55 0.08 30)" />
+          <circle cx="450" cy="186" r="14" fill="oklch(0.62 0.06 25)" />
+          <circle cx="610" cy="186" r="14" fill="oklch(0.50 0.10 35)" />
+          {/* Bottom info */}
+          <rect x="216" y="248" width="180" height="6" rx="3" fill="oklch(0.50 0.012 250 / 0.5)" />
+          <rect x="216" y="262" width="100" height="5" rx="2.5" fill="oklch(0.40 0.012 250 / 0.4)" />
+          {/* Action bar */}
+          <rect x="216" y="340" width="468" height="32" rx="16" fill="oklch(0.22 0.012 250)" />
+          <circle cx="332" cy="356" r="10" fill="oklch(0.30 0.012 250)" />
+          <circle cx="372" cy="356" r="10" fill="oklch(0.30 0.012 250)" />
+          <circle cx="412" cy="356" r="10" fill="oklch(0.30 0.012 250)" />
+          <circle cx="452" cy="356" r="10" fill="oklch(0.58 0.19 15)" />
+          <circle cx="492" cy="356" r="10" fill="oklch(0.30 0.012 250)" />
+          <circle cx="532" cy="356" r="10" fill="oklch(0.30 0.012 250)" />
+        </g>
+      </g>
+
+      {/* Stand */}
+      <g>
+        <rect x="445" y="400" width="10" height="50" rx="2" fill="oklch(0.88 0.012 50)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.6" />
+        <rect x="370" y="448" width="160" height="8" rx="3" fill="oklch(0.88 0.012 50)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.6" />
+        <ellipse cx="450" cy="465" rx="220" ry="16" fill="oklch(0.20 0.05 30 / 0.10)" />
+      </g>
+
+      {/* Floating peripheral devices around the display */}
+      {/* Microphone (left) */}
+      <g filter="url(#device-shadow)" transform="translate(60, 220) rotate(-8)">
+        <ellipse cx="0" cy="0" rx="46" ry="22" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
+        <circle cx="0" cy="0" r="14" fill="oklch(0.20 0.012 250)" />
+        <circle cx="0" cy="0" r="10" fill="oklch(0.32 0.012 250)" />
+        {/* Status LED */}
+        <circle cx="-32" cy="-12" r="2" fill="oklch(0.72 0.16 145)" />
+      </g>
+
+      {/* Speaker (right) */}
+      <g filter="url(#device-shadow)" transform="translate(820, 240) rotate(6)">
+        <rect x="-30" y="-50" width="60" height="100" rx="6" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
+        <circle cx="0" cy="-25" r="14" fill="oklch(0.20 0.012 250)" />
+        <circle cx="0" cy="-25" r="9" fill="oklch(0.32 0.012 250)" />
+        <circle cx="0" cy="20" r="8" fill="oklch(0.20 0.012 250)" />
+        <circle cx="0" cy="20" r="5" fill="oklch(0.32 0.012 250)" />
+      </g>
+
+      {/* Touch panel (bottom-left) */}
+      <g filter="url(#device-shadow)" transform="translate(140, 410) rotate(-4)">
+        <rect x="-50" y="-32" width="100" height="64" rx="6" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
+        <rect x="-44" y="-26" width="88" height="52" rx="3" fill="oklch(0.20 0.012 250)" />
+        <rect x="-36" y="-18" width="40" height="6" rx="3" fill="oklch(0.58 0.19 15 / 0.85)" />
+        <rect x="-36" y="-6" width="60" height="4" rx="2" fill="oklch(0.50 0.012 250 / 0.6)" />
+        <rect x="-36" y="4" width="50" height="4" rx="2" fill="oklch(0.50 0.012 250 / 0.6)" />
+        <circle cx="22" cy="14" r="6" fill="oklch(0.58 0.19 15)" />
+      </g>
+
+      {/* Keyboard / laptop (bottom-right) */}
+      <g filter="url(#device-shadow)" transform="translate(740, 420) rotate(5)">
+        <rect x="-60" y="-40" width="120" height="76" rx="4" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
+        <rect x="-54" y="-34" width="108" height="58" rx="2" fill="oklch(0.20 0.012 250)" />
+        {/* Keys */}
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+          <rect key={i} x={-50 + i * 10} y="-30" width="8" height="8" rx="1" fill="oklch(0.32 0.012 250)" />
+        ))}
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+          <rect key={i} x={-50 + i * 10} y="-18" width="8" height="8" rx="1" fill="oklch(0.32 0.012 250)" />
+        ))}
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+          <rect key={i} x={-50 + i * 10} y="-6" width="8" height="8" rx="1" fill="oklch(0.32 0.012 250)" />
+        ))}
+        <rect x="-30" y="14" width="50" height="6" rx="1" fill="oklch(0.32 0.012 250)" />
+      </g>
+
+      {/* Connection lines between elements (faint) */}
+      <g stroke="oklch(0.58 0.19 15 / 0.18)" strokeWidth="0.8" strokeDasharray="2 4" fill="none">
+        <path d="M 110 220 Q 145 200 196 240" />
+        <path d="M 790 240 Q 750 200 704 240" />
+        <path d="M 190 410 Q 250 380 280 380" />
+        <path d="M 680 420 Q 640 380 620 380" />
+      </g>
+    </svg>
+
+    {/* Floating spec cards */}
+    <div className="hero-spec-card hero-spec-card--tl">
+      <div className="hero-spec-card__label">Mount Height</div>
+      <div className="hero-spec-card__value">2200 <span>MM AFF</span></div>
     </div>
+    <div className="hero-spec-card hero-spec-card--tr">
+      <div className="hero-spec-card__label">Support</div>
+      <div className="hero-spec-card__value">24<span>H</span></div>
+      <div className="hero-spec-card__sub">Response time</div>
+    </div>
+    <div className="hero-spec-card hero-spec-card--br">
+      <div className="hero-spec-card__label">Plattformar</div>
+      <div className="hero-spec-card__value hero-spec-card__value--small">Teams · Zoom · Meet</div>
+    </div>
+  </div>
+);
+
+const Hero = () => (
+  <section className="hero" id="hero">
+    <HeroCanvas />
 
     <div className="hero-inner">
       <div className="hero-eyebrow-row">
@@ -62,21 +193,19 @@ const Hero = () => (
         Mötesteknik<br />
         som bara <em>fungerar</em>.
       </h1>
-    </div>
-
-    <div className="hero-foot">
       <p className="hero-sub">
         Vi bygger kompletta AV- och IT-miljöer för företag som vill att tekniken
         ska försvinna i bakgrunden — och låta arbetet stå i centrum.
       </p>
+
+      <HeroStage />
+    </div>
+
+    <div className="hero-foot">
       <div className="hero-meta">
         <div className="spec-line" style={{ minWidth: 200 }}>
           <span className="label">Sedan</span>
           <span className="value">2021</span>
-        </div>
-        <div className="spec-line" style={{ minWidth: 200 }}>
-          <span className="label">Bromma</span>
-          <span className="value">Stockholm</span>
         </div>
       </div>
       <div className="hero-scroll">
@@ -357,7 +486,7 @@ const Footer = ({ onOpenShop }) => (
           <div className="footer-logo">
             <img src={logoImage} alt="HLPY" className="logo-image footer-logo-image" />
           </div>
-          <p style={{ color: 'color-mix(in oklch, var(--cream) 60%, transparent)', maxWidth: '32ch', fontSize: 13 }}>
+          <p style={{ color: 'var(--ink-mute)', maxWidth: '32ch', fontSize: 13 }}>
             Smart, komplett AV & IT för moderna arbetsplatser. Bromma, Stockholm.
           </p>
         </div>
