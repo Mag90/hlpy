@@ -413,18 +413,18 @@ const DeviceShape = ({ device, highlight }) => {
   })();
   return (
     <g>
-      {/* Hover highlight ring around device when dragging an applicable cable */}
+      {/* Hover highlight ring — neutral, doesn't reveal correctness */}
       {highlight && (
         <rect
           x={device.x - 14} y={device.y - 14}
           width={device.w + 28} height={device.h + 28}
           rx={14}
           fill="none"
-          stroke={highlight === 'valid' ? 'oklch(0.62 0.16 145)' : 'oklch(0.58 0.19 15)'}
-          strokeWidth={highlight === 'valid' ? 2 : 1.4}
-          strokeDasharray={highlight === 'valid' ? '0' : '6 4'}
-          opacity={highlight === 'valid' ? 0.85 : 0.55}
-          style={{ transition: 'stroke 0.2s, opacity 0.2s' }}
+          stroke="oklch(0.58 0.19 15)"
+          strokeWidth="1.4"
+          strokeDasharray="6 4"
+          opacity="0.65"
+          style={{ transition: 'opacity 0.2s' }}
         />
       )}
       {inner}
@@ -599,13 +599,7 @@ const CableGame = () => {
   /* ---- Highlights for devices during drag ---- */
   const deviceHighlight = (device) => {
     if (!drag) return null;
-    const hovered = hoveredDeviceId === device.id;
-    if (!hovered) return null;
-    const accepts = device.ports.some(p => p.cableType === drag.cableType);
-    const alreadyConnected = connections.some(
-      c => c.deviceId === device.id && c.cableType === drag.cableType
-    );
-    return (accepts && !alreadyConnected) ? 'valid' : 'invalid';
+    return hoveredDeviceId === device.id ? 'hover' : null;
   };
 
   /* ---- Render ---- */
