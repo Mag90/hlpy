@@ -450,25 +450,42 @@ const CableGame = () => {
     const device = findDeviceUnder(dropPt, level.devices);
 
     if (device) {
-      // Find first unfilled matching port
-      const portIdx = device.ports.findIndex((p, i) => {
-        const filled = connections.some(c => c.deviceId === device.id && c.portIdx === i);
-        return p.cableType === cableType && !filled;
-      });
+      // Does this device accept this cable type?
+      const accepts = device.ports.some(p => p.cableType === cableType);
+      // Already a connection of this cable type to this device?
+      const alreadyConnected = connections.some(
+        c => c.deviceId === device.id && c.cableType === cableType
+      );
 
-      if (portIdx >= 0) {
-        const port = device.ports[portIdx];
-        const id = `c-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-        setConnections(prev => [...prev, {
-          id, cableType, deviceId: device.id, portIdx,
-          cx: port.cx, cy: port.cy,
-        }]);
-        setDrag(null);
-        setHoveredDeviceId(null);
-        return;
+      if (accepts && !alreadyConnected) {
+        // Find nearest unfilled slot on the device (by distance to drop point)
+        const filledKeys = new Set(
+          connections
+            .filter(c => c.deviceId === device.id)
+            .map(c => `${c.cx},${c.cy}`)
+        );
+        let nearestSlot = null;
+        let nearestD = Infinity;
+        for (const port of device.ports) {
+          const key = `${port.cx},${port.cy}`;
+          if (filledKeys.has(key)) continue;
+          const d = Math.hypot(dropPt.x - port.cx, dropPt.y - port.cy);
+          if (d < nearestD) { nearestD = d; nearestSlot = port; }
+        }
+
+        if (nearestSlot) {
+          const id = `c-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+          setConnections(prev => [...prev, {
+            id, cableType, deviceId: device.id,
+            cx: nearestSlot.cx, cy: nearestSlot.cy,
+          }]);
+          setDrag(null);
+          setHoveredDeviceId(null);
+          return;
+        }
       }
 
-      // Wrong type for this device — flash on the device area
+      // Wrong drop on device — flash on the device
       setWrongFlash({ cableType, end: dropPt });
       setWrongAttempts(w => w + 1);
       setDrag(null);
@@ -521,12 +538,11 @@ const CableGame = () => {
     if (!drag) return null;
     const hovered = hoveredDeviceId === device.id;
     if (!hovered) return null;
-    // Is there an unfilled matching port?
-    const valid = device.ports.some((p, i) =>
-      p.cableType === drag.cableType &&
-      !connections.some(c => c.deviceId === device.id && c.portIdx === i)
+    const accepts = device.ports.some(p => p.cableType === drag.cableType);
+    const alreadyConnected = connections.some(
+      c => c.deviceId === device.id && c.cableType === drag.cableType
     );
-    return valid ? 'valid' : 'invalid';
+    return (accepts && !alreadyConnected) ? 'valid' : 'invalid';
   };
 
   /* ---- Render ---- */
@@ -598,6 +614,25 @@ const CableGame = () => {
             {level.devices.map(d => (
               <DeviceShape key={d.id} device={d} highlight={deviceHighlight(d)} />
             ))}
+
+            {/* Empty port slots — show locations + count, no labels */}
+            {level.devices.flatMap(d =>
+              d.ports.map((p, i) => {
+                const filled = connections.some(c => c.deviceId === d.id && c.cx === p.cx && c.cy === p.cy);
+                return (
+                  <rect
+                    key={`slot-${d.id}-${i}`}
+                    x={p.cx - 8} y={p.cy - 6}
+                    width={16} height={12}
+                    rx={1.5}
+                    fill="oklch(0.18 0.012 250)"
+                    stroke="oklch(0.60 0.012 250)"
+                    strokeWidth="1"
+                    opacity={filled ? 0 : 1}
+                  />
+                );
+              })
+            )}
 
             {/* Connected cables — cords from tray sources to ports */}
             {connections.map((conn) => {
