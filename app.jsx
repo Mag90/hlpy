@@ -4,7 +4,10 @@ import References from './references.jsx';
 import CableGame from './cable_game.jsx';
 import Shop from './shop.jsx';
 
-/* ---------- Hero scroll signal ---------- */
+/* ---------- Hero scroll signal ----------
+   Hero uses a tall spacer with sticky-pinned content. Progress goes
+   0 → 1 as the user scrolls through the pin range (spacer height − vh).
+   After progress hits 1, the hero unpins and scrolls away normally. */
 const useHeroScroll = () => {
   React.useEffect(() => {
     let raf = null;
@@ -12,7 +15,10 @@ const useHeroScroll = () => {
       const heroEl = document.getElementById('hero');
       if (!heroEl) { raf = null; return; }
       const rect = heroEl.getBoundingClientRect();
-      const progress = Math.max(0, Math.min(1, -rect.top / Math.max(1, rect.height)));
+      const vh = window.innerHeight;
+      // Pin range = total hero height − one viewport (the sticky height)
+      const pinRange = Math.max(1, rect.height - vh);
+      const progress = Math.max(0, Math.min(1, -rect.top / pinRange));
       document.documentElement.style.setProperty('--hero-scroll', String(progress));
       raf = null;
     };
@@ -35,11 +41,7 @@ const useHeroScroll = () => {
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "pinkIntensity": "balanced",
   "typeScale": "regular",
-  "heroMood": "warm",
-  "heroBoot": "on",
-  "heroParallax": "on",
-  "heroScreen": "on",
-  "heroPolish": "on"
+  "heroMood": "warm"
 }/*EDITMODE-END*/;
 
 const Tweaks = () => {
@@ -74,12 +76,6 @@ const Tweaks = () => {
     }
     const scale = vals.typeScale === 'large' ? 1.1 : vals.typeScale === 'small' ? 0.9 : 1;
     root.style.fontSize = `${16 * scale}px`;
-
-    // Hero motion toggles — sync body classes
-    document.body.classList.toggle('hero-fx-boot',     vals.heroBoot     === 'on');
-    document.body.classList.toggle('hero-fx-parallax', vals.heroParallax === 'on');
-    document.body.classList.toggle('hero-fx-screen',   vals.heroScreen   === 'on');
-    document.body.classList.toggle('hero-fx-polish',   vals.heroPolish   === 'on');
   }, [vals]);
 
   const set = (key, value) => {
@@ -112,36 +108,6 @@ const Tweaks = () => {
           <Option k="typeScale" v="small" label="S" />
           <Option k="typeScale" v="regular" label="M" />
           <Option k="typeScale" v="large" label="L" />
-        </div>
-      </div>
-
-      <h5 style={{ marginTop: 18 }}><span>Hero motion</span></h5>
-      <div className="tweak-row">
-        <label>Boot sequence</label>
-        <div className="opts">
-          <Option k="heroBoot" v="on"  label="On" />
-          <Option k="heroBoot" v="off" label="Off" />
-        </div>
-      </div>
-      <div className="tweak-row">
-        <label>Parallax</label>
-        <div className="opts">
-          <Option k="heroParallax" v="on"  label="On" />
-          <Option k="heroParallax" v="off" label="Off" />
-        </div>
-      </div>
-      <div className="tweak-row">
-        <label>Display screen</label>
-        <div className="opts">
-          <Option k="heroScreen" v="on"  label="On" />
-          <Option k="heroScreen" v="off" label="Off" />
-        </div>
-      </div>
-      <div className="tweak-row">
-        <label>Polish pack</label>
-        <div className="opts">
-          <Option k="heroPolish" v="on"  label="On" />
-          <Option k="heroPolish" v="off" label="Off" />
         </div>
       </div>
     </div>
@@ -233,11 +199,6 @@ const App = () => {
   useReveal();
   useHeroScroll();
   const [shopOpen, setShopOpen] = React.useState(false);
-
-  // Default body classes — Tweaks effect later overrides these if user toggles
-  React.useEffect(() => {
-    document.body.classList.add('hero-fx-boot', 'hero-fx-parallax', 'hero-fx-screen', 'hero-fx-polish');
-  }, []);
 
   return (
     <>

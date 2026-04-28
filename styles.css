@@ -200,16 +200,14 @@ body {
 }
 
 /* ----- Hero ----- */
+/* Hero outer = tall spacer that drives the pinned scroll. The visible content
+   lives inside .hero-pinned (sticky). Total height = pin range + viewport. */
 .hero {
   position: relative;
-  min-height: 100vh;
-  padding: 140px var(--gutter) 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
+  height: 220vh;
   background: var(--cream);
   color: var(--ink);
+  overflow: visible;
 }
 
 .hero-canvas {
@@ -220,38 +218,6 @@ body {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-}
-
-.hero-inner {
-  position: relative;
-  z-index: 2;
-  max-width: var(--maxw);
-  margin: 0 auto;
-  width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 28px;
-  padding-top: 40px;
-  text-align: center;
-  align-items: center;
-}
-
-.hero-inner .hero-eyebrow-row {
-  justify-content: center;
-}
-
-.hero-inner h1 {
-  text-align: center;
-  max-width: 18ch;
-}
-
-.hero-inner .hero-sub {
-  text-align: center;
-  margin: 0 auto;
-  max-width: 56ch;
-  font-size: 18px;
 }
 
 /* Hero stage — central AV equipment composition */
@@ -360,160 +326,271 @@ body {
 }
 
 /* ==========================================================================
-   Hero motion FX — gated by body classes so each behavior is independently
-   togglable from the Tweaks panel.
-   --hero-scroll: 0 (top of hero) → 1 (hero scrolled out) — set by useHeroScroll.
-   .hero-booted: added via IntersectionObserver on first hero entry.
+   Pinned scroll-driven hero
+   --hero-scroll: 0 → 1 across the pin range (set by useHeroScroll).
+   The hero is a tall outer section with a sticky inner block; as the user
+   scrolls, the meeting room "builds itself" stage by stage.
    ========================================================================== */
 
-/* --- Behavior 1: Boot sequence --- */
-@keyframes heroPeriphIn {
-  from { opacity: 0; transform: translate(var(--periph-from-x, 0), var(--periph-from-y, 0)) scale(0.94); }
-  to   { opacity: 1; transform: translate(0, 0) scale(1); }
+.hero-pinned {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 640px;
+  padding: 100px var(--gutter) 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  background: var(--cream);
+  color: var(--ink);
 }
 
-@keyframes heroDashDraw {
-  from { stroke-dashoffset: 240; opacity: 0; }
-  20%  { opacity: 1; }
-  to   { stroke-dashoffset: 0; opacity: 1; }
+/* When pinned, the hero-canvas backdrop fills the sticky block, not the spacer */
+.hero-pinned .hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
 
-@keyframes heroCardIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Two-column layout: text on the left, stage on the right */
+.hero-pinned .hero-inner {
+  display: grid;
+  grid-template-columns: minmax(360px, 1fr) minmax(0, 1.4fr);
+  gap: 48px;
+  align-items: center;
+  padding-top: 0;
+  text-align: left;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  flex: 1;
+  position: relative;
+  z-index: 2;
 }
 
-body.hero-fx-boot .hero .periph {
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 520px;
 }
 
-body.hero-fx-boot .hero.hero-booted .periph {
-  animation: heroPeriphIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+.hero-text h1 {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: clamp(40px, 5.6vw, 84px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin: 0;
+  color: var(--ink);
+  text-transform: lowercase;
+  text-wrap: balance;
 }
 
-/* Stagger and per-side starting offsets */
-body.hero-fx-boot .hero .periph-mic        { --periph-from-x: -80px; --periph-from-y: 10px; }
-body.hero-fx-boot .hero .periph-speaker    { --periph-from-x: 80px;  --periph-from-y: 10px; }
-body.hero-fx-boot .hero .periph-touchpanel { --periph-from-x: -60px; --periph-from-y: 30px; }
-body.hero-fx-boot .hero .periph-laptop     { --periph-from-x: 60px;  --periph-from-y: 30px; }
+.hero-text h1 em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--rose);
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  text-transform: none;
+}
 
-body.hero-fx-boot .hero.hero-booted .periph-mic        { animation-delay: 0.05s; }
-body.hero-fx-boot .hero.hero-booted .periph-speaker    { animation-delay: 0.15s; }
-body.hero-fx-boot .hero.hero-booted .periph-touchpanel { animation-delay: 0.25s; }
-body.hero-fx-boot .hero.hero-booted .periph-laptop     { animation-delay: 0.35s; }
+.hero-text .hero-eyebrow-row {
+  justify-content: flex-start;
+}
 
-/* Connection line dash-draw */
-body.hero-fx-boot .hero .hero-conn {
-  opacity: 0;
+.hero-text .hero-sub {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 44ch;
+  margin: 0;
+  text-align: left;
+}
+
+/* Progress hint — shows scroll-build progress under the headline */
+.hero-progress-hint {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.hero-progress-bar {
+  display: inline-block;
+  width: 200px;
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--ink) 8%, transparent);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-progress-fill {
+  display: block;
+  height: 100%;
+  width: calc(var(--hero-scroll, 0) * 100%);
+  background: var(--rose);
+  border-radius: 999px;
+  transition: width 0.05s linear;
+}
+
+/* Stage column */
+.hero-stage-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Constrain the existing hero-stage to fit pinned column */
+.hero-stage-wrap .hero-stage {
+  margin: 0;
+  max-width: 100%;
+}
+
+/* Hero foot — small scroll indicator below */
+.hero-pinned .hero-foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+  margin-top: 0;
+  border-top: 0;
+}
+
+/* ---- Stage build-up — each element ramps in across its own progress window ---- */
+@property --hero-scroll {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+/* Helper: every element with a --start/--end pair gets a normalized --p */
+.hs-stage {
+  --p: clamp(0, calc((var(--hero-scroll, 0) - var(--start, 0)) / max(0.001, calc(var(--end, 1) - var(--start, 0)))), 1);
+  opacity: var(--p);
+}
+
+/* Display chassis — first to materialize */
+.hero-display { --start: 0.00; --end: 0.10;
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.00) / 0.10), 1);
+  translate: 0 calc((1 - clamp(0, calc((var(--hero-scroll, 0) - 0.00) / 0.10), 1)) * 24px);
+}
+
+/* LED + tiles + LIVE badge stagger inside the display */
+.hero-led {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.10) / 0.04), 1);
+}
+.hero-tile[data-i="0"] {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.12) / 0.06), 1);
+}
+.hero-tile[data-i="1"] {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.15) / 0.06), 1);
+}
+.hero-tile[data-i="2"] {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.18) / 0.06), 1);
+}
+.hero-live {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.22) / 0.06), 1);
+}
+
+/* Peripherals slide in from outer offsets */
+.periph-mic {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.30) / 0.10), 1);
+  translate: calc((1 - clamp(0, calc((var(--hero-scroll, 0) - 0.30) / 0.10), 1)) * -100px) 0;
+}
+.periph-speaker {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.34) / 0.10), 1);
+  translate: calc((1 - clamp(0, calc((var(--hero-scroll, 0) - 0.34) / 0.10), 1)) * 100px) 0;
+}
+.periph-touchpanel {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.38) / 0.10), 1);
+  translate: calc((1 - clamp(0, calc((var(--hero-scroll, 0) - 0.38) / 0.10), 1)) * -60px)
+             calc((1 - clamp(0, calc((var(--hero-scroll, 0) - 0.38) / 0.10), 1)) * 60px);
+}
+.periph-laptop {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.42) / 0.10), 1);
+  translate: calc((1 - clamp(0, calc((var(--hero-scroll, 0) - 0.42) / 0.10), 1)) * 60px)
+             calc((1 - clamp(0, calc((var(--hero-scroll, 0) - 0.42) / 0.10), 1)) * 60px);
+}
+
+/* Connection lines draw via stroke-dashoffset */
+.hero-conn {
   stroke-dasharray: 240;
-  stroke-dashoffset: 240;
+}
+.hero-conn[data-i="0"] {
+  stroke-dashoffset: calc(240 - 240 * clamp(0, calc((var(--hero-scroll, 0) - 0.55) / 0.07), 1));
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.55) / 0.04), 1);
+}
+.hero-conn[data-i="1"] {
+  stroke-dashoffset: calc(240 - 240 * clamp(0, calc((var(--hero-scroll, 0) - 0.58) / 0.07), 1));
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.58) / 0.04), 1);
+}
+.hero-conn[data-i="2"] {
+  stroke-dashoffset: calc(240 - 240 * clamp(0, calc((var(--hero-scroll, 0) - 0.61) / 0.07), 1));
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.61) / 0.04), 1);
+}
+.hero-conn[data-i="3"] {
+  stroke-dashoffset: calc(240 - 240 * clamp(0, calc((var(--hero-scroll, 0) - 0.64) / 0.07), 1));
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.64) / 0.04), 1);
 }
 
-body.hero-fx-boot .hero.hero-booted .hero-conn {
-  animation: heroDashDraw 0.7s ease-out forwards;
+/* Spec cards float in last */
+.hero-spec-card--tl {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.75) / 0.10), 1);
+  translate: 0 calc((1 - clamp(0, calc((var(--hero-scroll, 0) - 0.75) / 0.10), 1)) * 16px);
+}
+.hero-spec-card--tr {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.78) / 0.10), 1);
+  translate: 0 calc((1 - clamp(0, calc((var(--hero-scroll, 0) - 0.78) / 0.10), 1)) * 16px);
+}
+.hero-spec-card--br {
+  opacity: clamp(0, calc((var(--hero-scroll, 0) - 0.81) / 0.10), 1);
+  translate: 0 calc((1 - clamp(0, calc((var(--hero-scroll, 0) - 0.81) / 0.10), 1)) * 16px);
 }
 
-body.hero-fx-boot .hero.hero-booted .hero-conn[data-i="0"] { animation-delay: 0.55s; }
-body.hero-fx-boot .hero.hero-booted .hero-conn[data-i="1"] { animation-delay: 0.65s; }
-body.hero-fx-boot .hero.hero-booted .hero-conn[data-i="2"] { animation-delay: 0.75s; }
-body.hero-fx-boot .hero.hero-booted .hero-conn[data-i="3"] { animation-delay: 0.85s; }
-
-/* Spec cards stagger */
-body.hero-fx-boot .hero .hero-spec-card {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-body.hero-fx-boot .hero.hero-booted .hero-spec-card {
-  animation: heroCardIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-body.hero-fx-boot .hero.hero-booted .hero-spec-card--tl { animation-delay: 0.7s; }
-body.hero-fx-boot .hero.hero-booted .hero-spec-card--tr { animation-delay: 0.85s; }
-body.hero-fx-boot .hero.hero-booted .hero-spec-card--br { animation-delay: 1.0s; }
-
-/* --- Behavior 2: Scroll-linked parallax ---
-   Uses the standalone `translate` CSS property (not `transform`) so it
-   composes with the boot keyframe's `transform` instead of overriding it. */
-body.hero-fx-parallax .hero-stage-svg .periph-mic {
-  translate: calc(var(--hero-scroll, 0) * -36px) 0;
-}
-
-body.hero-fx-parallax .hero-stage-svg .periph-speaker {
-  translate: calc(var(--hero-scroll, 0) * 36px) 0;
-}
-
-body.hero-fx-parallax .hero-stage-svg .periph-touchpanel {
-  translate: calc(var(--hero-scroll, 0) * -24px) calc(var(--hero-scroll, 0) * 18px);
-}
-
-body.hero-fx-parallax .hero-stage-svg .periph-laptop {
-  translate: calc(var(--hero-scroll, 0) * 24px) calc(var(--hero-scroll, 0) * 18px);
-}
-
-body.hero-fx-parallax .hero-spec-card--tl {
-  translate: 0 calc(var(--hero-scroll, 0) * -42px);
-}
-
-body.hero-fx-parallax .hero-spec-card--tr {
-  translate: 0 calc(var(--hero-scroll, 0) * -22px);
-}
-
-body.hero-fx-parallax .hero-spec-card--br {
-  translate: 0 calc(var(--hero-scroll, 0) * -56px);
-}
-
-body.hero-fx-parallax .hero-canvas svg {
-  translate: 0 calc(var(--hero-scroll, 0) * -28px);
-}
-
-/* --- Behavior 3: Display "comes online" --- */
-body.hero-fx-screen .hero .hero-led,
-body.hero-fx-screen .hero .hero-tile,
-body.hero-fx-screen .hero .hero-live {
-  opacity: 0;
-}
-
-@keyframes heroFadeIn {
-  to { opacity: var(--target-opacity, 1); }
-}
-
-body.hero-fx-screen .hero.hero-booted .hero-led {
-  --target-opacity: 1;
-  animation: heroFadeIn 0.3s ease-out 0.5s forwards;
-}
-
-body.hero-fx-screen .hero.hero-booted .hero-tile[data-i="0"] {
-  --target-opacity: 1;
-  animation: heroFadeIn 0.4s ease-out 0.7s forwards;
-}
-
-body.hero-fx-screen .hero.hero-booted .hero-tile[data-i="1"] {
-  --target-opacity: 1;
-  animation: heroFadeIn 0.4s ease-out 0.88s forwards;
-}
-
-body.hero-fx-screen .hero.hero-booted .hero-tile[data-i="2"] {
-  --target-opacity: 1;
-  animation: heroFadeIn 0.4s ease-out 1.06s forwards;
-}
-
-body.hero-fx-screen .hero.hero-booted .hero-live {
-  --target-opacity: 1;
-  animation: heroFadeIn 0.3s ease-out 1.3s forwards;
-}
-
-/* --- Behavior 4: Polish pack --- */
-body.hero-fx-polish .hero h1 {
-  letter-spacing: calc(-0.04em - var(--hero-scroll, 0) * 0.012em);
-}
-
-body.hero-fx-polish .hero {
-  opacity: calc(1 - var(--hero-scroll, 0) * 0.4);
-  filter: blur(calc(var(--hero-scroll, 0) * 4px));
-  will-change: opacity, filter;
+/* On smaller screens, drop the pinned behavior — show everything immediately */
+@media (max-width: 1100px) {
+  .hero {
+    height: auto !important;
+  }
+  .hero-pinned {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    padding: 140px var(--gutter) 80px;
+  }
+  .hero-pinned .hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero-text {
+    max-width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+  .hero-text .hero-eyebrow-row { justify-content: center; }
+  .hero-text .hero-sub { text-align: center; max-width: 56ch; }
+  .hero-progress-hint { display: none; }
+  /* Show all stage elements at full opacity, no scroll-driven masking */
+  .hero-display, .hero-led, .hero-tile, .hero-live,
+  .periph-mic, .periph-speaker, .periph-touchpanel, .periph-laptop,
+  .hero-conn, .hero-spec-card--tl, .hero-spec-card--tr, .hero-spec-card--br {
+    opacity: 1 !important;
+    translate: 0 0 !important;
+    stroke-dashoffset: 0 !important;
+  }
 }
 
 .hero-eyebrow-row {
@@ -547,27 +624,6 @@ body.hero-fx-polish .hero {
     opacity: 0.5;
     transform: scale(1.3);
   }
-}
-
-.hero h1 {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: clamp(48px, 8vw, 120px);
-  line-height: 0.92;
-  letter-spacing: -0.04em;
-  margin: 0;
-  color: var(--ink);
-  text-transform: lowercase;
-  text-wrap: balance;
-}
-
-.hero h1 em {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
-  color: var(--rose);
-  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
-  text-transform: none;
 }
 
 .hero-foot {

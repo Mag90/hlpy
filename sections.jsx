@@ -186,62 +186,48 @@ const HeroStage = () => (
   </div>
 );
 
-const Hero = () => {
-  const sectionRef = React.useRef(null);
-  const [booted, setBooted] = React.useState(false);
+const Hero = () => (
+  <section className="hero" id="hero">
+    {/* Outer spacer drives scroll distance for the pinned animation */}
+    <div className="hero-pinned">
+      <HeroCanvas />
 
-  React.useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    // Boot as soon as it's even slightly visible — for top-of-page hero, fire immediately on mount
-    const boot = () => setBooted(true);
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { boot(); io.disconnect(); } });
-    }, { threshold: 0.05 });
-    io.observe(el);
-    // Also fire on next frame in case hero is already at top (initial paint)
-    const t = requestAnimationFrame(boot);
-    return () => { io.disconnect(); cancelAnimationFrame(t); };
-  }, []);
+      <div className="hero-inner">
+        <div className="hero-text">
+          <div className="hero-eyebrow-row">
+            <span className="dot" />
+            <span>Stockholm — Sedan 2021</span>
+            <span style={{ opacity: 0.4 }}>/</span>
+            <span>AV & IT för moderna arbetsplatser</span>
+          </div>
+          <h1>
+            Mötesteknik<br />
+            som bara <em>fungerar</em>.
+          </h1>
+          <p className="hero-sub">
+            Vi bygger kompletta AV- och IT-miljöer för företag som vill att tekniken
+            ska försvinna i bakgrunden — och låta arbetet stå i centrum.
+          </p>
+          <div className="hero-progress-hint">
+            <span className="hero-progress-label">Scrolla för att bygga rummet</span>
+            <span className="hero-progress-bar"><span className="hero-progress-fill" /></span>
+          </div>
+        </div>
 
-  return (
-  <section ref={sectionRef} className={`hero ${booted ? 'hero-booted' : ''}`} id="hero">
-    <HeroCanvas />
-
-    <div className="hero-inner">
-      <div className="hero-eyebrow-row">
-        <span className="dot" />
-        <span>Stockholm — Sedan 2021</span>
-        <span style={{ opacity: 0.4 }}>/</span>
-        <span>AV & IT för moderna arbetsplatser</span>
-      </div>
-      <h1>
-        Mötesteknik<br />
-        som bara <em>fungerar</em>.
-      </h1>
-      <p className="hero-sub">
-        Vi bygger kompletta AV- och IT-miljöer för företag som vill att tekniken
-        ska försvinna i bakgrunden — och låta arbetet stå i centrum.
-      </p>
-
-      <HeroStage />
-    </div>
-
-    <div className="hero-foot">
-      <div className="hero-meta">
-        <div className="spec-line" style={{ minWidth: 200 }}>
-          <span className="label">Sedan</span>
-          <span className="value">2021</span>
+        <div className="hero-stage-wrap">
+          <HeroStage />
         </div>
       </div>
-      <div className="hero-scroll">
-        <span>Scrolla</span>
-        <span className="arrow">↓</span>
+
+      <div className="hero-foot">
+        <div className="hero-scroll">
+          <span>Scrolla</span>
+          <span className="arrow">↓</span>
+        </div>
       </div>
     </div>
   </section>
-  );
-};
+);
 
 const Marquee = () => {
   const items = [
