@@ -5,8 +5,9 @@ import React from 'react';
    ======================================================================== */
 const VIEW_W = 1000;
 const VIEW_H = 700;
-const TRAY_Y = 580;
-const HIT_DIST = 60;
+const TRAY_Y = 600;
+const HIT_MARGIN = 30; // px of forgiveness around device bbox
+const FLASH_MS = 900;
 
 const CABLE_DEFS = {
   hdmi:  { color: '#E8B4A8', label: 'HDMI' },
@@ -16,8 +17,18 @@ const CABLE_DEFS = {
   power: { color: '#888888', label: 'Power' },
 };
 
+// Tray order (left to right) — same in every level
+const TRAY_ORDER = ['hdmi', 'usbc', 'rj45', 'audio', 'power'];
+
+const traySourcePos = (cableType) => {
+  const idx = TRAY_ORDER.indexOf(cableType);
+  const margin = 100;
+  const step = (VIEW_W - 2 * margin) / (TRAY_ORDER.length - 1);
+  return { x: margin + idx * step, y: TRAY_Y };
+};
+
 /* ========================================================================
-   Levels — each defines its own devices + port positions + cables in tray
+   Levels — devices + their port slots (no labels until connected)
    ======================================================================== */
 const LEVELS = [
   {
@@ -30,103 +41,100 @@ const LEVELS = [
         x: 280, y: 60, w: 440, h: 280,
         screenLabel: 'CONFERENCE BAR · STANDBY',
         ports: [
-          { cableType: 'hdmi',  cx: 740, cy: 200, label: 'HDMI' },
-          { cableType: 'power', cx: 740, cy: 280, label: 'POWER' },
+          { cableType: 'hdmi',  cx: 740, cy: 200 },
+          { cableType: 'power', cx: 740, cy: 280 },
         ],
       },
     ],
-    cables: ['hdmi', 'power'],
   },
   {
     id: 2,
     title: 'Ljudbaren',
-    sub: 'Tre kablar — en port till.',
+    sub: 'En ny enhet — gissa rätt portar.',
     devices: [
       {
         id: 'soundbar1', type: 'soundbar',
         x: 200, y: 240, w: 600, h: 100,
         ports: [
-          { cableType: 'hdmi',  cx: 820, cy: 260, label: 'HDMI ARC' },
-          { cableType: 'audio', cx: 820, cy: 300, label: '3.5mm' },
-          { cableType: 'power', cx: 820, cy: 340, label: 'POWER' },
+          { cableType: 'hdmi',  cx: 820, cy: 260 },
+          { cableType: 'audio', cx: 820, cy: 300 },
+          { cableType: 'power', cx: 820, cy: 340 },
         ],
       },
     ],
-    cables: ['hdmi', 'audio', 'power'],
   },
   {
     id: 3,
     title: 'Kameran',
-    sub: 'Konferenskamera — andra portar.',
+    sub: 'Konferenskamera — andra portar än skärmen.',
     devices: [
       {
         id: 'camera1', type: 'camera',
         x: 360, y: 180, w: 280, h: 200,
         ports: [
-          { cableType: 'usbc',  cx: 660, cy: 230, label: 'USB-C' },
-          { cableType: 'rj45',  cx: 660, cy: 280, label: 'ETHERNET' },
-          { cableType: 'power', cx: 660, cy: 330, label: 'POWER' },
+          { cableType: 'usbc',  cx: 660, cy: 230 },
+          { cableType: 'rj45',  cx: 660, cy: 280 },
+          { cableType: 'power', cx: 660, cy: 330 },
         ],
       },
     ],
-    cables: ['usbc', 'rj45', 'power'],
   },
   {
     id: 4,
     title: 'Halva mötesrummet',
-    sub: 'Två enheter — välj rätt port på rätt enhet.',
+    sub: 'Två enheter — välj rätt enhet för varje kabel.',
     devices: [
       {
         id: 'display2', type: 'display',
         x: 60, y: 80, w: 360, h: 220,
         screenLabel: 'STANDBY',
         ports: [
-          { cableType: 'hdmi',  cx: 440, cy: 160, label: 'HDMI' },
-          { cableType: 'power', cx: 440, cy: 240, label: 'POWER' },
+          { cableType: 'hdmi',  cx: 440, cy: 160 },
+          { cableType: 'power', cx: 440, cy: 240 },
         ],
       },
       {
         id: 'camera2', type: 'camera',
         x: 600, y: 160, w: 240, h: 200,
         ports: [
-          { cableType: 'usbc',  cx: 860, cy: 220, label: 'USB-C' },
-          { cableType: 'rj45',  cx: 860, cy: 300, label: 'ETHERNET' },
+          { cableType: 'usbc',  cx: 860, cy: 220 },
+          { cableType: 'rj45',  cx: 860, cy: 300 },
+          { cableType: 'power', cx: 860, cy: 340 },
         ],
       },
     ],
-    cables: ['hdmi', 'power', 'usbc', 'rj45'],
   },
   {
     id: 5,
     title: 'Fullt mötesrum',
-    sub: 'Hela uppsättningen — koppla allt rätt.',
+    sub: 'Tre enheter, alla portar — kan ni ringa oss istället?',
     devices: [
       {
         id: 'display3', type: 'display',
         x: 60, y: 60, w: 340, h: 200,
         screenLabel: 'STANDBY',
         ports: [
-          { cableType: 'hdmi',  cx: 420, cy: 130, label: 'HDMI' },
-          { cableType: 'power', cx: 420, cy: 210, label: 'POWER' },
+          { cableType: 'hdmi',  cx: 420, cy: 130 },
+          { cableType: 'power', cx: 420, cy: 210 },
         ],
       },
       {
         id: 'camera3', type: 'camera',
         x: 600, y: 70, w: 240, h: 180,
         ports: [
-          { cableType: 'usbc',  cx: 860, cy: 130, label: 'USB-C' },
-          { cableType: 'rj45',  cx: 860, cy: 210, label: 'ETHERNET' },
+          { cableType: 'usbc',  cx: 860, cy: 130 },
+          { cableType: 'rj45',  cx: 860, cy: 210 },
         ],
       },
       {
         id: 'mic1', type: 'mic',
-        x: 360, y: 340, w: 280, h: 100,
+        x: 360, y: 320, w: 280, h: 100,
         ports: [
-          { cableType: 'audio', cx: 660, cy: 390, label: '3.5mm' },
+          { cableType: 'audio', cx: 660, cy: 370 },
+          { cableType: 'power', cx: 660, cy: 410 },
         ],
       },
     ],
-    cables: ['hdmi', 'power', 'usbc', 'rj45', 'audio'],
   },
 ];
 
@@ -143,29 +151,30 @@ const bezierPath = (start, end) => {
   return `M ${start.x} ${start.y} Q ${mx} ${my + sag} ${end.x} ${end.y}`;
 };
 
-const trayPosForIndex = (idx, count) => {
-  const margin = 140;
-  if (count === 1) return { x: VIEW_W / 2, y: TRAY_Y };
-  const step = (VIEW_W - 2 * margin) / (count - 1);
-  return { x: margin + idx * step, y: TRAY_Y };
+const findDeviceUnder = (pt, devices) => {
+  // 1) bbox + margin
+  for (const d of devices) {
+    if (
+      pt.x >= d.x - HIT_MARGIN && pt.x <= d.x + d.w + HIT_MARGIN &&
+      pt.y >= d.y - HIT_MARGIN && pt.y <= d.y + d.h + HIT_MARGIN
+    ) {
+      return d;
+    }
+  }
+  // 2) fallback — within radius of any of the device's port positions (helps when port sits just outside the bbox, e.g. mic)
+  for (const d of devices) {
+    for (const p of d.ports) {
+      if (Math.hypot(pt.x - p.cx, pt.y - p.cy) < 60) return d;
+    }
+  }
+  return null;
 };
 
-const initLevelCables = (level) =>
-  level.cables.map((cableType, i) => ({
-    id: `${cableType}-${i}`,
-    cableType,
-    state: 'idle',
-    end: { x: trayPosForIndex(i, level.cables.length).x, y: TRAY_Y - 40 },
-  }));
-
-const flatPorts = (level) =>
-  level.devices.flatMap(d => d.ports.map(p => ({ ...p, deviceId: d.id })));
-
-const finalRec = (total, max) => {
-  const pct = total / max;
-  if (pct === 1)    return 'Du är professionell. Vi anställer dig.';
-  if (pct >= 0.82)  return 'Bra jobbat. Men HLPY är snabbare.';
-  if (pct >= 0.5)   return 'Vi rekommenderar professionell installation.';
+const finalRec = (totalWrongs, totalRequired) => {
+  if (totalWrongs === 0) return 'Felfritt. Imponerande — vi anställer er.';
+  const ratio = totalWrongs / totalRequired;
+  if (ratio <= 0.3) return 'Bra jobbat. Nästan proffsigt.';
+  if (ratio <= 0.8) return 'Hyfsat. Vi rekommenderar professionell installation.';
   return 'Det är därför vi finns. Låt oss ta hand om det.';
 };
 
@@ -218,7 +227,7 @@ const DisplayShape = ({ device }) => {
         fill="oklch(0.72 0.14 65 / 0.85)"
         letterSpacing="0.2em"
       >
-        {screenLabel || 'CONFERENCE BAR · STANDBY'}
+        {screenLabel || 'STANDBY'}
       </text>
       <circle cx={x + w - 30} cy={y + 30} r={4} fill="oklch(0.72 0.14 65)" opacity="0.9" />
       {/* Stand */}
@@ -231,11 +240,8 @@ const DisplayShape = ({ device }) => {
 const SoundbarShape = ({ device }) => {
   const { x, y, w, h } = device;
   const cy = y + h / 2;
-  // Speaker grille dot pattern
   const grilleDots = [];
-  const grilleStart = x + 30;
-  const grilleEnd = x + w - 30;
-  for (let gx = grilleStart; gx < grilleEnd; gx += 8) {
+  for (let gx = x + 30; gx < x + w - 30; gx += 8) {
     for (let gy = y + 18; gy < y + h - 18; gy += 8) {
       grilleDots.push(<circle key={`${gx}-${gy}`} cx={gx} cy={gy} r={1.4} fill="oklch(0.55 0.012 250)" />);
     }
@@ -250,7 +256,6 @@ const SoundbarShape = ({ device }) => {
         stroke="oklch(0.70 0.012 250)"
         strokeWidth="1.5"
       />
-      {/* Inner panel */}
       <rect
         x={x + 14} y={y + 12}
         width={w - 28} height={h - 24}
@@ -258,10 +263,8 @@ const SoundbarShape = ({ device }) => {
         fill="oklch(0.92 0.012 50)"
       />
       {grilleDots}
-      {/* Center indicator */}
       <circle cx={x + w / 2} cy={cy} r={6} fill="oklch(0.20 0.012 250)" />
       <circle cx={x + w / 2} cy={cy} r={3} fill="oklch(0.72 0.14 65)" opacity="0.9" />
-      {/* End caps */}
       <rect x={x + 8} y={y + 8} width={6} height={h - 16} rx={3} fill="oklch(0.85 0.012 250)" />
       <rect x={x + w - 14} y={y + 8} width={6} height={h - 16} rx={3} fill="oklch(0.85 0.012 250)" />
     </g>
@@ -274,7 +277,6 @@ const CameraShape = ({ device }) => {
   const cy = y + h / 2;
   return (
     <g>
-      {/* Body */}
       <rect
         x={x} y={y}
         width={w} height={h}
@@ -283,21 +285,17 @@ const CameraShape = ({ device }) => {
         stroke="oklch(0.70 0.012 250)"
         strokeWidth="1.5"
       />
-      {/* Front face */}
       <rect
         x={x + 12} y={y + 12}
         width={w - 24} height={h - 24}
         rx={6}
         fill="oklch(0.20 0.012 250)"
       />
-      {/* Lens */}
       <circle cx={cx} cy={cy} r={Math.min(w, h) * 0.25} fill="oklch(0.10 0.005 250)" />
       <circle cx={cx} cy={cy} r={Math.min(w, h) * 0.20} fill="oklch(0.16 0.012 250)" stroke="oklch(0.40 0.012 250)" strokeWidth="1" />
       <circle cx={cx} cy={cy} r={Math.min(w, h) * 0.10} fill="oklch(0.20 0.012 250)" />
       <circle cx={cx - 4} cy={cy - 4} r={Math.min(w, h) * 0.04} fill="oklch(0.85 0.06 220)" opacity="0.6" />
-      {/* Status LED */}
       <circle cx={x + w - 20} cy={y + 20} r={3} fill="oklch(0.72 0.16 145)" />
-      {/* Mic dots along the bottom */}
       {[0.25, 0.5, 0.75].map((p) => (
         <circle key={p} cx={x + w * p} cy={y + h - 18} r={1.5} fill="oklch(0.55 0.012 250)" />
       ))}
@@ -311,7 +309,6 @@ const MicShape = ({ device }) => {
   const cy = y + h / 2;
   return (
     <g>
-      {/* Outer disc */}
       <ellipse
         cx={cx} cy={cy}
         rx={w / 2} ry={h / 2}
@@ -319,13 +316,11 @@ const MicShape = ({ device }) => {
         stroke="oklch(0.70 0.012 250)"
         strokeWidth="1.5"
       />
-      {/* Grille ring */}
       <ellipse
         cx={cx} cy={cy}
         rx={(w / 2) - 14} ry={(h / 2) - 14}
         fill="oklch(0.20 0.012 250)"
       />
-      {/* Grille dot pattern */}
       {(() => {
         const dots = [];
         const rxg = (w / 2) - 18;
@@ -338,20 +333,40 @@ const MicShape = ({ device }) => {
         }
         return dots;
       })()}
-      {/* Status LED */}
       <circle cx={cx - w * 0.32} cy={cy} r={3} fill="oklch(0.72 0.16 145)" />
     </g>
   );
 };
 
-const DeviceShape = ({ device }) => {
-  switch (device.type) {
-    case 'display':  return <DisplayShape  device={device} />;
-    case 'soundbar': return <SoundbarShape device={device} />;
-    case 'camera':   return <CameraShape   device={device} />;
-    case 'mic':      return <MicShape      device={device} />;
-    default: return null;
-  }
+const DeviceShape = ({ device, highlight }) => {
+  const inner = (() => {
+    switch (device.type) {
+      case 'display':  return <DisplayShape  device={device} />;
+      case 'soundbar': return <SoundbarShape device={device} />;
+      case 'camera':   return <CameraShape   device={device} />;
+      case 'mic':      return <MicShape      device={device} />;
+      default: return null;
+    }
+  })();
+  return (
+    <g>
+      {/* Hover highlight ring around device when dragging an applicable cable */}
+      {highlight && (
+        <rect
+          x={device.x - 14} y={device.y - 14}
+          width={device.w + 28} height={device.h + 28}
+          rx={14}
+          fill="none"
+          stroke={highlight === 'valid' ? 'oklch(0.62 0.16 145)' : 'oklch(0.58 0.19 15)'}
+          strokeWidth={highlight === 'valid' ? 2 : 1.4}
+          strokeDasharray={highlight === 'valid' ? '0' : '6 4'}
+          opacity={highlight === 'valid' ? 0.85 : 0.55}
+          style={{ transition: 'stroke 0.2s, opacity 0.2s' }}
+        />
+      )}
+      {inner}
+    </g>
+  );
 };
 
 /* ========================================================================
@@ -361,44 +376,38 @@ const CableGame = () => {
   const svgRef = React.useRef(null);
 
   const [currentLevelIdx, setCurrentLevelIdx] = React.useState(0);
-  const [levelScores, setLevelScores]         = React.useState([]);
-  const [cables, setCables]                   = React.useState(() => initLevelCables(LEVELS[0]));
-  const [dragging, setDragging]               = React.useState(null);
+  const [connections, setConnections]         = React.useState([]); // [{ id, cableType, deviceId, portIdx, cx, cy }]
+  const [drag, setDrag]                       = React.useState(null); // { cableType, end: {x,y}, pointerId }
+  const [wrongFlash, setWrongFlash]           = React.useState(null); // { cableType, end: {x,y} }
+  const [wrongAttempts, setWrongAttempts]     = React.useState(0);
+  const [levelWrongs, setLevelWrongs]         = React.useState([]);
   const [showResult, setShowResult]           = React.useState(false);
-  const [hoveredPort, setHoveredPort]         = React.useState(null);
+  const [hoveredDeviceId, setHoveredDeviceId] = React.useState(null);
 
   const level = LEVELS[currentLevelIdx];
-  const ports = React.useMemo(() => flatPorts(level), [level]);
   const isLastLevel = currentLevelIdx === LEVELS.length - 1;
 
-  const trayAnchor = React.useCallback(
-    (cableId) => {
-      const idx = cables.findIndex(c => c.id === cableId);
-      return trayPosForIndex(idx, cables.length);
-    },
-    [cables],
+  const totalPorts = React.useMemo(
+    () => level.devices.reduce((acc, d) => acc + d.ports.length, 0),
+    [level],
   );
-
-  const placedCount = cables.filter(c =>
-    c.state === 'connected' || c.state === 'wrong-locked'
-  ).length;
-
-  const correctCount = cables.filter(c => c.state === 'connected').length;
+  const filledPorts = connections.length;
+  const isLevelComplete = filledPorts === totalPorts && totalPorts > 0;
 
   // When level completes, save score + show result
   React.useEffect(() => {
-    if (placedCount === cables.length && cables.length > 0 && !showResult) {
+    if (isLevelComplete && !showResult) {
       const timer = setTimeout(() => {
-        setLevelScores(prev => {
+        setLevelWrongs(prev => {
           const next = [...prev];
-          next[currentLevelIdx] = correctCount;
+          next[currentLevelIdx] = wrongAttempts;
           return next;
         });
         setShowResult(true);
       }, 600);
       return () => clearTimeout(timer);
     }
-  }, [placedCount, cables.length, showResult, currentLevelIdx, correctCount]);
+  }, [isLevelComplete, showResult, currentLevelIdx, wrongAttempts]);
 
   /* ---- Coord conversion ---- */
   const svgPoint = (e) => {
@@ -414,118 +423,111 @@ const CableGame = () => {
     return { x: transformed.x, y: transformed.y };
   };
 
-  const updateCable = (id, partial) => {
-    setCables(prev => prev.map(c => (c.id === id ? { ...c, ...partial } : c)));
-  };
-
   /* ---- Drag handlers ---- */
-  const onCablePointerDown = (e, cableId) => {
-    const cable = cables.find(c => c.id === cableId);
-    if (!cable || cable.state === 'connected' || cable.state === 'wrong-locked') return;
+  const onSourcePointerDown = (e, cableType) => {
+    if (drag || wrongFlash || showResult) return;
     e.stopPropagation();
     if (e.target.setPointerCapture) {
       try { e.target.setPointerCapture(e.pointerId); } catch {}
     }
     const pt = svgPoint(e);
-    setDragging({ id: cableId, pointerId: e.pointerId });
-    updateCable(cableId, { state: 'dragging', end: pt });
+    setDrag({ cableType, end: pt, pointerId: e.pointerId });
   };
 
   const onSvgPointerMove = (e) => {
-    if (!dragging) return;
+    if (!drag) return;
     const pt = svgPoint(e);
-    updateCable(dragging.id, { end: pt });
-
-    let nearPort = null;
-    let nearestD = HIT_DIST + 20;
-    for (const p of ports) {
-      const d = Math.hypot(pt.x - p.cx, pt.y - p.cy);
-      if (d < nearestD) {
-        nearestD = d;
-        nearPort = p;
-      }
-    }
-    setHoveredPort(nearPort ? `${nearPort.deviceId}-${nearPort.cableType}` : null);
-  };
-
-  const animateSnapBack = (cableId) => {
-    const startEnd = cables.find(c => c.id === cableId)?.end || { x: 0, y: 0 };
-    const target = { ...trayAnchor(cableId), y: TRAY_Y - 40 };
-    const startTime = performance.now();
-    const duration = 320;
-    const step = (now) => {
-      const t = Math.min(1, (now - startTime) / duration);
-      const ease = 1 - Math.pow(1 - t, 3);
-      const nx = startEnd.x + (target.x - startEnd.x) * ease;
-      const ny = startEnd.y + (target.y - startEnd.y) * ease;
-      updateCable(cableId, { end: { x: nx, y: ny } });
-      if (t < 1) requestAnimationFrame(step);
-      else updateCable(cableId, { state: 'idle', end: target });
-    };
-    requestAnimationFrame(step);
+    setDrag(d => (d ? { ...d, end: pt } : d));
+    const hit = findDeviceUnder(pt, level.devices);
+    setHoveredDeviceId(hit?.id || null);
   };
 
   const onSvgPointerUp = () => {
-    if (!dragging) return;
-    const cable = cables.find(c => c.id === dragging.id);
-    if (!cable) {
-      setDragging(null);
-      setHoveredPort(null);
+    if (!drag) return;
+    const dropPt = drag.end;
+    const cableType = drag.cableType;
+
+    const device = findDeviceUnder(dropPt, level.devices);
+
+    if (device) {
+      // Find first unfilled matching port
+      const portIdx = device.ports.findIndex((p, i) => {
+        const filled = connections.some(c => c.deviceId === device.id && c.portIdx === i);
+        return p.cableType === cableType && !filled;
+      });
+
+      if (portIdx >= 0) {
+        const port = device.ports[portIdx];
+        const id = `c-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+        setConnections(prev => [...prev, {
+          id, cableType, deviceId: device.id, portIdx,
+          cx: port.cx, cy: port.cy,
+        }]);
+        setDrag(null);
+        setHoveredDeviceId(null);
+        return;
+      }
+
+      // Wrong type for this device — flash on the device area
+      setWrongFlash({ cableType, end: dropPt });
+      setWrongAttempts(w => w + 1);
+      setDrag(null);
+      setHoveredDeviceId(null);
+      setTimeout(() => setWrongFlash(null), FLASH_MS);
       return;
     }
 
-    let hit = null;
-    let nearestD = HIT_DIST;
-    for (const p of ports) {
-      const d = Math.hypot(cable.end.x - p.cx, cable.end.y - p.cy);
-      if (d < nearestD) {
-        nearestD = d;
-        hit = p;
-      }
-    }
-
-    setDragging(null);
-    setHoveredPort(null);
-
-    if (hit && hit.cableType === cable.cableType) {
-      updateCable(dragging.id, { state: 'connected', end: { x: hit.cx, y: hit.cy } });
-    } else if (hit) {
-      updateCable(dragging.id, { state: 'wrong-flash', end: { x: hit.cx, y: hit.cy } });
-      setTimeout(() => updateCable(dragging.id, { state: 'wrong-locked' }), 360);
-    } else {
-      updateCable(dragging.id, { state: 'snapping-back' });
-      animateSnapBack(dragging.id);
-    }
+    // Dropped on empty space — no flash, no penalty (cancel)
+    setDrag(null);
+    setHoveredDeviceId(null);
   };
 
   /* ---- Level transitions ---- */
   const advanceLevel = () => {
     if (isLastLevel) return;
-    const next = currentLevelIdx + 1;
-    setCurrentLevelIdx(next);
-    setCables(initLevelCables(LEVELS[next]));
+    setCurrentLevelIdx(currentLevelIdx + 1);
+    setConnections([]);
     setShowResult(false);
-    setHoveredPort(null);
+    setWrongAttempts(0);
+    setWrongFlash(null);
+    setHoveredDeviceId(null);
   };
 
   const replayLevel = () => {
-    setCables(initLevelCables(level));
+    setConnections([]);
     setShowResult(false);
-    setHoveredPort(null);
+    setWrongAttempts(0);
+    setWrongFlash(null);
+    setHoveredDeviceId(null);
   };
 
   const restartGame = () => {
     setCurrentLevelIdx(0);
-    setLevelScores([]);
-    setCables(initLevelCables(LEVELS[0]));
+    setConnections([]);
+    setLevelWrongs([]);
+    setWrongAttempts(0);
     setShowResult(false);
-    setHoveredPort(null);
+    setWrongFlash(null);
+    setHoveredDeviceId(null);
   };
 
   /* ---- Derived for rendering ---- */
   const allLevelsComplete = isLastLevel && showResult;
-  const totalScore = levelScores.reduce((a, b) => a + (b || 0), 0);
-  const totalPossible = LEVELS.reduce((a, l) => a + l.cables.length, 0); // 17
+  const totalWrongs = levelWrongs.reduce((a, b) => a + (b || 0), 0);
+  const totalPossible = LEVELS.reduce((a, l) => a + l.devices.reduce((dd, d) => dd + d.ports.length, 0), 0);
+
+  /* ---- Highlights for devices during drag ---- */
+  const deviceHighlight = (device) => {
+    if (!drag) return null;
+    const hovered = hoveredDeviceId === device.id;
+    if (!hovered) return null;
+    // Is there an unfilled matching port?
+    const valid = device.ports.some((p, i) =>
+      p.cableType === drag.cableType &&
+      !connections.some(c => c.deviceId === device.id && c.portIdx === i)
+    );
+    return valid ? 'valid' : 'invalid';
+  };
 
   /* ---- Render ---- */
   return (
@@ -541,8 +543,8 @@ const CableGame = () => {
             <h2 style={{ marginTop: 16 }}>Tror du att du <em>kan</em> kabla?</h2>
           </div>
           <p>
-            Fem nivåer, en utmaning. Dra varje kabel till rätt port på rätt enhet.
-            Vi räknar dina rätta svar och berättar om ni klarar er själva — eller borde ringa oss.
+            Fem nivåer. Alla kablar finns alltid tillgängliga — det gäller att veta
+            vad varje enhet behöver. Fel försök räknas. Vi räknar dem.
           </p>
         </div>
 
@@ -554,6 +556,10 @@ const CableGame = () => {
             <span className="game-level-title">{level.title}</span>
           </div>
           <p className="game-level-sub">{level.sub}</p>
+          <div className="game-level-stats">
+            <span className="game-level-stat-label">Felförsök</span>
+            <span className="game-level-stat-value">{wrongAttempts}</span>
+          </div>
           <div className="game-level-pips">
             {LEVELS.map((_, i) => (
               <span
@@ -590,102 +596,148 @@ const CableGame = () => {
 
             {/* Devices */}
             {level.devices.map(d => (
-              <DeviceShape key={d.id} device={d} />
+              <DeviceShape key={d.id} device={d} highlight={deviceHighlight(d)} />
             ))}
 
-            {/* Ports */}
-            {ports.map((p) => {
-              const draggedCable = dragging ? cables.find(c => c.id === dragging.id) : null;
-              const isCorrectTarget = draggedCable && draggedCable.cableType === p.cableType;
-              const portKey = `${p.deviceId}-${p.cableType}`;
-              const isHovered = hoveredPort === portKey && !!dragging;
-              const ringColor = isHovered && isCorrectTarget
-                ? 'oklch(0.62 0.16 145)'
-                : (isHovered ? 'oklch(0.58 0.19 15)' : 'oklch(0.65 0.012 250)');
+            {/* Connected cables — cords from tray sources to ports */}
+            {connections.map((conn) => {
+              const def = CABLE_DEFS[conn.cableType];
+              const start = traySourcePos(conn.cableType);
+              const end = { x: conn.cx, y: conn.cy };
               return (
-                <g key={portKey}>
-                  {dragging && (
-                    <circle
-                      cx={p.cx} cy={p.cy}
-                      r={isHovered ? 26 : 18}
-                      fill="none"
-                      stroke={ringColor}
-                      strokeWidth={isHovered ? 1.6 : 1}
-                      opacity={isHovered ? 0.85 : 0.4}
-                      style={{ transition: 'r 0.2s, stroke 0.2s, opacity 0.2s' }}
-                    />
-                  )}
-                  <rect
-                    x={p.cx - 8} y={p.cy - 6}
-                    width={16} height={12}
-                    rx={1.5}
-                    fill="oklch(0.18 0.012 250)"
-                    stroke="oklch(0.60 0.012 250)"
-                    strokeWidth="1"
+                <g key={`conn-${conn.id}`}>
+                  <path
+                    d={bezierPath(start, end)}
+                    fill="none"
+                    stroke={def.color}
+                    strokeWidth={4}
+                    strokeLinecap="round"
                   />
+                  {/* Connector head */}
+                  <rect
+                    x={end.x - 11} y={end.y - 7}
+                    width={22} height={14}
+                    rx={2}
+                    fill={def.color}
+                    stroke="oklch(0.78 0.16 145)"
+                    strokeWidth="2"
+                  />
+                  <circle
+                    cx={end.x} cy={end.y}
+                    r={20}
+                    fill="none"
+                    stroke="oklch(0.78 0.16 145)"
+                    strokeWidth="1"
+                    opacity="0.4"
+                  />
+                  {/* Port label revealed on connection */}
                   <text
-                    x={p.cx + 18} y={p.cy + 3.5}
+                    x={end.x + 18} y={end.y + 3.5}
                     fontFamily="JetBrains Mono, monospace"
                     fontSize="9"
                     fill="oklch(0.45 0.012 250)"
                     letterSpacing="0.15em"
                   >
-                    {p.label}
+                    {def.label.toUpperCase()}
                   </text>
                 </g>
               );
             })}
 
-            {/* Tray base line */}
+            {/* Wrong-flash cable — briefly shown red, then disappears */}
+            {wrongFlash && (() => {
+              const def = CABLE_DEFS[wrongFlash.cableType];
+              const start = traySourcePos(wrongFlash.cableType);
+              const end = wrongFlash.end;
+              return (
+                <g className="wrong-flash">
+                  <path
+                    d={bezierPath(start, end)}
+                    fill="none"
+                    stroke="oklch(0.58 0.22 25)"
+                    strokeWidth={4}
+                    strokeLinecap="round"
+                    opacity="0.85"
+                  />
+                  <rect
+                    x={end.x - 11} y={end.y - 7}
+                    width={22} height={14}
+                    rx={2}
+                    fill="oklch(0.58 0.22 25)"
+                    stroke="oklch(0.40 0.18 25)"
+                    strokeWidth="1.5"
+                  />
+                  <text
+                    x={end.x} y={end.y - 18}
+                    textAnchor="middle"
+                    fontFamily="JetBrains Mono, monospace"
+                    fontSize="10"
+                    fill="oklch(0.55 0.20 25)"
+                    letterSpacing="0.16em"
+                  >
+                    PASSAR EJ
+                  </text>
+                </g>
+              );
+            })()}
+
+            {/* Active drag — cord from source to cursor */}
+            {drag && (() => {
+              const def = CABLE_DEFS[drag.cableType];
+              const start = traySourcePos(drag.cableType);
+              const end = drag.end;
+              return (
+                <g style={{ pointerEvents: 'none' }}>
+                  <path
+                    d={bezierPath(start, end)}
+                    fill="none"
+                    stroke={def.color}
+                    strokeWidth={4}
+                    strokeLinecap="round"
+                  />
+                  <rect
+                    x={end.x - 11} y={end.y - 7}
+                    width={22} height={14}
+                    rx={2}
+                    fill={def.color}
+                    stroke="rgba(0,0,0,0.3)"
+                    strokeWidth="1"
+                  />
+                </g>
+              );
+            })()}
+
+            {/* Tray base line + label */}
             <line
-              x1={80} y1={TRAY_Y + 30}
-              x2={VIEW_W - 80} y2={TRAY_Y + 30}
+              x1={60} y1={TRAY_Y + 32}
+              x2={VIEW_W - 60} y2={TRAY_Y + 32}
               stroke="oklch(0.65 0.012 250)"
               strokeWidth="1"
             />
             <text
-              x={80} y={TRAY_Y + 56}
+              x={60} y={TRAY_Y + 56}
               fontFamily="JetBrains Mono, monospace"
               fontSize="9"
               fill="oklch(0.45 0.012 250)"
               letterSpacing="0.18em"
             >
-              KABEL-LÅDA · DRA UPP TILL RÄTT PORT
+              KABEL-LÅDA · ALLA KABLAR ALLTID TILLGÄNGLIGA
             </text>
 
-            {/* Cords first (behind heads) */}
-            {cables.map((cable) => {
-              const def = CABLE_DEFS[cable.cableType];
-              const start = trayAnchor(cable.id);
-              const end = cable.end;
-              const isWrong = cable.state === 'wrong-flash' || cable.state === 'wrong-locked';
-              const cordColor = isWrong ? 'oklch(0.58 0.22 25)' : def.color;
+            {/* Tray sources — fixed, always draggable */}
+            {TRAY_ORDER.map((cableType) => {
+              const def = CABLE_DEFS[cableType];
+              const pos = traySourcePos(cableType);
               return (
-                <path
-                  key={`cord-${cable.id}`}
-                  d={bezierPath(start, end)}
-                  fill="none"
-                  stroke={cordColor}
-                  strokeWidth={4}
-                  strokeLinecap="round"
-                  opacity={cable.state === 'idle' ? 0.85 : 1}
-                />
-              );
-            })}
-
-            {/* Tray sockets + connector heads */}
-            {cables.map((cable) => {
-              const def = CABLE_DEFS[cable.cableType];
-              const start = trayAnchor(cable.id);
-              const end = cable.end;
-              const isConnected = cable.state === 'connected';
-              const isWrong = cable.state === 'wrong-flash' || cable.state === 'wrong-locked';
-              const isDragging = cable.state === 'dragging';
-
-              return (
-                <g key={`cable-${cable.id}`}>
+                <g
+                  key={`source-${cableType}`}
+                  className="cable-head"
+                  onPointerDown={(e) => onSourcePointerDown(e, cableType)}
+                  style={{ cursor: 'grab', touchAction: 'none' }}
+                >
+                  {/* Label above source */}
                   <text
-                    x={start.x} y={start.y - 16}
+                    x={pos.x} y={pos.y - 22}
                     textAnchor="middle"
                     fontFamily="JetBrains Mono, monospace"
                     fontSize="9"
@@ -694,39 +746,27 @@ const CableGame = () => {
                   >
                     {def.label.toUpperCase()}
                   </text>
+                  {/* Source socket */}
                   <rect
-                    x={start.x - 16} y={start.y - 4}
-                    width={32} height={28}
-                    rx={3}
+                    x={pos.x - 18} y={pos.y - 6}
+                    width={36} height={32}
+                    rx={4}
                     fill="oklch(0.92 0.012 50)"
                     stroke="oklch(0.65 0.012 250)"
                     strokeWidth="1"
                   />
-                  <g
-                    className={`cable-head ${isDragging ? 'dragging' : ''} ${isConnected ? 'connected' : ''}`}
-                    onPointerDown={(e) => onCablePointerDown(e, cable.id)}
-                    style={{ touchAction: 'none' }}
-                  >
-                    <rect
-                      x={end.x - 11} y={end.y - 7}
-                      width={22} height={14}
-                      rx={2}
-                      fill={isWrong ? 'oklch(0.58 0.22 25)' : def.color}
-                      stroke={isConnected ? 'oklch(0.78 0.16 145)' : 'rgba(0,0,0,0.3)'}
-                      strokeWidth={isConnected ? 2 : 1}
-                      style={{ transition: isConnected ? 'stroke 0.3s' : 'none' }}
-                    />
-                    {isConnected && (
-                      <circle
-                        cx={end.x} cy={end.y}
-                        r={20}
-                        fill="none"
-                        stroke="oklch(0.78 0.16 145)"
-                        strokeWidth="1"
-                        opacity="0.5"
-                      />
-                    )}
-                  </g>
+                  {/* Connector head sitting on socket */}
+                  <rect
+                    x={pos.x - 13} y={pos.y - 1}
+                    width={26} height={20}
+                    rx={3}
+                    fill={def.color}
+                    stroke="rgba(0,0,0,0.25)"
+                    strokeWidth="1"
+                  />
+                  {/* Small dots indicating it's pluggable */}
+                  <circle cx={pos.x - 5} cy={pos.y + 9} r={1} fill="rgba(0,0,0,0.35)" />
+                  <circle cx={pos.x + 5} cy={pos.y + 9} r={1} fill="rgba(0,0,0,0.35)" />
                 </g>
               );
             })}
@@ -736,13 +776,15 @@ const CableGame = () => {
           {!allLevelsComplete && (
             <div className={`game-result ${showResult ? 'visible' : ''}`}>
               <div className="level-kicker">Nivå {currentLevelIdx + 1} — {level.title}</div>
-              <div className="score">{correctCount} / {cables.length}</div>
+              <div className="score">
+                {wrongAttempts === 0 ? 'Felfritt!' : `${wrongAttempts} fel`}
+              </div>
               <div className="recommend">
-                {correctCount === cables.length
-                  ? 'Allt rätt. Bra jobbat.'
-                  : correctCount > 0
-                    ? 'Hyfsat. Nästa nivå väntar.'
-                    : 'Det blev tufft. Ge inte upp.'}
+                {wrongAttempts === 0
+                  ? 'Inga felaktiga försök. Snyggt.'
+                  : wrongAttempts <= 2
+                    ? 'Bra. Bara några bom.'
+                    : 'Det blev några bom på vägen.'}
               </div>
               <div className="actions">
                 <button className="game-btn primary" onClick={advanceLevel}>Nästa nivå →</button>
@@ -754,9 +796,9 @@ const CableGame = () => {
           {/* Final cumulative result modal */}
           {allLevelsComplete && (
             <div className="game-result visible">
-              <div className="level-kicker">Slutresultat</div>
-              <div className="score">{totalScore} / {totalPossible}</div>
-              <div className="recommend">{finalRec(totalScore, totalPossible)}</div>
+              <div className="level-kicker">Slutresultat — alla 5 nivåer klara</div>
+              <div className="score">{totalWrongs} fel</div>
+              <div className="recommend">{finalRec(totalWrongs, totalPossible)}</div>
               <div className="actions">
                 <a className="game-btn primary" href="#contact">Boka kostnadsfri konsultation →</a>
                 <button className="game-btn secondary" onClick={restartGame}>Börja om</button>

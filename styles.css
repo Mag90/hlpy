@@ -1663,10 +1663,46 @@ body {
   min-width: 200px;
 }
 
+.game-level-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.game-level-stat-label {
+  color: var(--ink-mute);
+}
+
+.game-level-stat-value {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  color: var(--rose);
+  text-transform: none;
+  min-width: 16px;
+  text-align: center;
+}
+
 .game-level-pips {
   display: flex;
   gap: 8px;
   margin-left: auto;
+}
+
+/* Wrong-flash pulse */
+.wrong-flash {
+  animation: wrong-flash-pulse 0.9s ease-out forwards;
+}
+
+@keyframes wrong-flash-pulse {
+  0%   { opacity: 1; }
+  60%  { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 .game-level-pip {
