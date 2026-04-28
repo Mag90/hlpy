@@ -134,12 +134,23 @@ const SectionProgress = () => {
     return () => observers.forEach(o => o.disconnect());
   }, []);
 
+  const onDotClick = (e, id) => {
+    e.preventDefault();
+    if (id === 'hero') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <div className="section-progress">
       {PROGRESS_SECTIONS.map(s => (
         <a
           key={s.id}
           href={`#${s.id}`}
+          onClick={(e) => onDotClick(e, s.id)}
           className={`section-progress-dot ${active === s.id ? 'active' : ''}`}
         >
           <span className="label">{s.label}</span>

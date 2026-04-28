@@ -461,7 +461,7 @@ const Testimonial = () => {
                 borderRadius: 4,
                 border: 'none',
                 cursor: 'pointer',
-                background: i === idx ? 'var(--rose)' : 'color-mix(in oklch, var(--rose) 30%, transparent)',
+                background: i === idx ? 'var(--amber)' : 'color-mix(in oklch, var(--cream) 30%, transparent)',
                 transition: 'width 0.3s ease, background 0.3s ease',
                 padding: 0,
               }}

@@ -701,7 +701,7 @@ body {
 /* ----- Capability grid ----- */
 .capability {
   padding: 120px var(--gutter);
-  background: var(--cream-cool);
+  background: oklch(0.94 0.020 65);
   color: var(--ink);
   position: relative;
   overflow: hidden;
@@ -989,7 +989,8 @@ body {
 /* ----- Testimonial ----- */
 .testimonial {
   padding: 160px var(--gutter);
-  background: var(--rose-wash);
+  background: var(--studio);
+  color: var(--cream);
   position: relative;
   overflow: hidden;
 }
@@ -999,8 +1000,8 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 20% 30%, color-mix(in oklch, var(--rose) 18%, transparent), transparent 60%),
-    radial-gradient(ellipse at 80% 70%, color-mix(in oklch, var(--amber) 12%, transparent), transparent 55%);
+    radial-gradient(ellipse at 15% 20%, color-mix(in oklch, var(--amber) 12%, transparent), transparent 55%),
+    radial-gradient(ellipse at 85% 80%, color-mix(in oklch, var(--rose) 14%, transparent), transparent 60%);
   pointer-events: none;
 }
 
@@ -1019,14 +1020,14 @@ body {
   letter-spacing: -0.015em;
   margin: 32px 0 48px;
   text-wrap: balance;
-  color: var(--ink);
+  color: var(--cream);
   min-height: 6em;
 }
 
 .testimonial-quote em {
   font-style: normal;
   font-weight: 600;
-  color: var(--rose);
+  color: var(--amber);
 }
 
 .testimonial-attr {
@@ -1034,14 +1035,14 @@ body {
   align-items: center;
   gap: 20px;
   padding-top: 32px;
-  border-top: 1px solid color-mix(in oklch, var(--ink) 15%, transparent);
+  border-top: 1px solid var(--hairline-on-dark);
 }
 
 .testimonial-avatar {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--rose-soft), var(--rose));
+  background: linear-gradient(135deg, var(--amber), oklch(0.55 0.16 50));
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1057,6 +1058,7 @@ body {
   font-size: 20px;
   font-weight: 300;
   letter-spacing: -0.01em;
+  color: var(--cream);
 }
 
 .testimonial-role {
@@ -1064,7 +1066,7 @@ body {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink-mute);
+  color: color-mix(in oklch, var(--cream) 55%, transparent);
   margin-top: 4px;
 }
 
@@ -1611,6 +1613,91 @@ body {
   color: var(--ink-soft);
   max-width: 46ch;
   margin: 0;
+}
+
+/* Level header — shown above the game stage */
+.game-level-header {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 18px 0 16px;
+  margin-bottom: 16px;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.game-level-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.game-level-num {
+  color: var(--rose);
+}
+
+.game-level-divider {
+  color: color-mix(in oklch, var(--ink) 20%, transparent);
+}
+
+.game-level-title {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.game-level-sub {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0;
+  flex: 1;
+  min-width: 200px;
+}
+
+.game-level-pips {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.game-level-pip {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklch, var(--ink) 25%, transparent);
+  background: transparent;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.game-level-pip.done {
+  background: var(--rose);
+  border-color: var(--rose);
+}
+
+.game-level-pip.active {
+  background: transparent;
+  border-color: var(--rose);
+  border-width: 2px;
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--rose) 18%, transparent);
+}
+
+/* Per-level result modal kicker */
+.game-result .level-kicker {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 4px;
 }
 
 .game-stage {
