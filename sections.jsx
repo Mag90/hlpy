@@ -68,23 +68,23 @@ const HeroStage = () => (
       </g>
 
       {/* Display panel */}
-      <g filter="url(#device-shadow)">
+      <g filter="url(#device-shadow)" className="hero-display">
         <rect x="180" y="80" width="540" height="320" rx="12" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
         <rect x="196" y="96" width="508" height="288" rx="6" fill="url(#display-grad)" />
         {/* Screen content — abstract meeting UI */}
         <g>
           {/* Top bar mock */}
           <rect x="216" y="116" width="120" height="6" rx="3" fill="oklch(0.45 0.012 250 / 0.6)" />
-          <circle cx="680" cy="119" r="4" fill="oklch(0.72 0.16 145 / 0.9)" />
-          <text x="650" y="123" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="oklch(0.65 0.012 250)" textAnchor="end">LIVE</text>
+          <circle className="hero-led" cx="680" cy="119" r="4" fill="oklch(0.72 0.16 145 / 0.9)" />
+          <text className="hero-live" x="650" y="123" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="oklch(0.65 0.012 250)" textAnchor="end">LIVE</text>
           {/* Three video tiles */}
-          <rect x="216" y="140" width="148" height="92" rx="4" fill="oklch(0.30 0.018 30 / 0.8)" />
-          <rect x="376" y="140" width="148" height="92" rx="4" fill="oklch(0.32 0.022 35 / 0.8)" />
-          <rect x="536" y="140" width="148" height="92" rx="4" fill="oklch(0.28 0.020 30 / 0.8)" />
+          <rect className="hero-tile" data-i="0" x="216" y="140" width="148" height="92" rx="4" fill="oklch(0.30 0.018 30 / 0.8)" />
+          <rect className="hero-tile" data-i="1" x="376" y="140" width="148" height="92" rx="4" fill="oklch(0.32 0.022 35 / 0.8)" />
+          <rect className="hero-tile" data-i="2" x="536" y="140" width="148" height="92" rx="4" fill="oklch(0.28 0.020 30 / 0.8)" />
           {/* Avatars in tiles */}
-          <circle cx="290" cy="186" r="14" fill="oklch(0.55 0.08 30)" />
-          <circle cx="450" cy="186" r="14" fill="oklch(0.62 0.06 25)" />
-          <circle cx="610" cy="186" r="14" fill="oklch(0.50 0.10 35)" />
+          <circle className="hero-tile" data-i="0" cx="290" cy="186" r="14" fill="oklch(0.55 0.08 30)" />
+          <circle className="hero-tile" data-i="1" cx="450" cy="186" r="14" fill="oklch(0.62 0.06 25)" />
+          <circle className="hero-tile" data-i="2" cx="610" cy="186" r="14" fill="oklch(0.50 0.10 35)" />
           {/* Bottom info */}
           <rect x="216" y="248" width="180" height="6" rx="3" fill="oklch(0.50 0.012 250 / 0.5)" />
           <rect x="216" y="262" width="100" height="5" rx="2.5" fill="oklch(0.40 0.012 250 / 0.4)" />
@@ -106,58 +106,66 @@ const HeroStage = () => (
         <ellipse cx="450" cy="465" rx="220" ry="16" fill="oklch(0.20 0.05 30 / 0.10)" />
       </g>
 
-      {/* Floating peripheral devices around the display */}
+      {/* Floating peripheral devices around the display.
+          Each periph is wrapped in an outer <g> for CSS transforms (boot+parallax)
+          while the inner <g> retains the SVG positioning transform. */}
       {/* Microphone (left) */}
-      <g filter="url(#device-shadow)" transform="translate(60, 220) rotate(-8)">
-        <ellipse cx="0" cy="0" rx="46" ry="22" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
-        <circle cx="0" cy="0" r="14" fill="oklch(0.20 0.012 250)" />
-        <circle cx="0" cy="0" r="10" fill="oklch(0.32 0.012 250)" />
-        {/* Status LED */}
-        <circle cx="-32" cy="-12" r="2" fill="oklch(0.72 0.16 145)" />
+      <g className="periph periph-mic">
+        <g filter="url(#device-shadow)" transform="translate(60, 220) rotate(-8)">
+          <ellipse cx="0" cy="0" rx="46" ry="22" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
+          <circle cx="0" cy="0" r="14" fill="oklch(0.20 0.012 250)" />
+          <circle cx="0" cy="0" r="10" fill="oklch(0.32 0.012 250)" />
+          <circle cx="-32" cy="-12" r="2" fill="oklch(0.72 0.16 145)" />
+        </g>
       </g>
 
       {/* Speaker (right) */}
-      <g filter="url(#device-shadow)" transform="translate(820, 240) rotate(6)">
-        <rect x="-30" y="-50" width="60" height="100" rx="6" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
-        <circle cx="0" cy="-25" r="14" fill="oklch(0.20 0.012 250)" />
-        <circle cx="0" cy="-25" r="9" fill="oklch(0.32 0.012 250)" />
-        <circle cx="0" cy="20" r="8" fill="oklch(0.20 0.012 250)" />
-        <circle cx="0" cy="20" r="5" fill="oklch(0.32 0.012 250)" />
+      <g className="periph periph-speaker">
+        <g filter="url(#device-shadow)" transform="translate(820, 240) rotate(6)">
+          <rect x="-30" y="-50" width="60" height="100" rx="6" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
+          <circle cx="0" cy="-25" r="14" fill="oklch(0.20 0.012 250)" />
+          <circle cx="0" cy="-25" r="9" fill="oklch(0.32 0.012 250)" />
+          <circle cx="0" cy="20" r="8" fill="oklch(0.20 0.012 250)" />
+          <circle cx="0" cy="20" r="5" fill="oklch(0.32 0.012 250)" />
+        </g>
       </g>
 
       {/* Touch panel (bottom-left) */}
-      <g filter="url(#device-shadow)" transform="translate(140, 410) rotate(-4)">
-        <rect x="-50" y="-32" width="100" height="64" rx="6" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
-        <rect x="-44" y="-26" width="88" height="52" rx="3" fill="oklch(0.20 0.012 250)" />
-        <rect x="-36" y="-18" width="40" height="6" rx="3" fill="oklch(0.58 0.19 15 / 0.85)" />
-        <rect x="-36" y="-6" width="60" height="4" rx="2" fill="oklch(0.50 0.012 250 / 0.6)" />
-        <rect x="-36" y="4" width="50" height="4" rx="2" fill="oklch(0.50 0.012 250 / 0.6)" />
-        <circle cx="22" cy="14" r="6" fill="oklch(0.58 0.19 15)" />
+      <g className="periph periph-touchpanel">
+        <g filter="url(#device-shadow)" transform="translate(140, 410) rotate(-4)">
+          <rect x="-50" y="-32" width="100" height="64" rx="6" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
+          <rect x="-44" y="-26" width="88" height="52" rx="3" fill="oklch(0.20 0.012 250)" />
+          <rect x="-36" y="-18" width="40" height="6" rx="3" fill="oklch(0.58 0.19 15 / 0.85)" />
+          <rect x="-36" y="-6" width="60" height="4" rx="2" fill="oklch(0.50 0.012 250 / 0.6)" />
+          <rect x="-36" y="4" width="50" height="4" rx="2" fill="oklch(0.50 0.012 250 / 0.6)" />
+          <circle cx="22" cy="14" r="6" fill="oklch(0.58 0.19 15)" />
+        </g>
       </g>
 
       {/* Keyboard / laptop (bottom-right) */}
-      <g filter="url(#device-shadow)" transform="translate(740, 420) rotate(5)">
-        <rect x="-60" y="-40" width="120" height="76" rx="4" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
-        <rect x="-54" y="-34" width="108" height="58" rx="2" fill="oklch(0.20 0.012 250)" />
-        {/* Keys */}
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
-          <rect key={i} x={-50 + i * 10} y="-30" width="8" height="8" rx="1" fill="oklch(0.32 0.012 250)" />
-        ))}
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
-          <rect key={i} x={-50 + i * 10} y="-18" width="8" height="8" rx="1" fill="oklch(0.32 0.012 250)" />
-        ))}
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
-          <rect key={i} x={-50 + i * 10} y="-6" width="8" height="8" rx="1" fill="oklch(0.32 0.012 250)" />
-        ))}
-        <rect x="-30" y="14" width="50" height="6" rx="1" fill="oklch(0.32 0.012 250)" />
+      <g className="periph periph-laptop">
+        <g filter="url(#device-shadow)" transform="translate(740, 420) rotate(5)">
+          <rect x="-60" y="-40" width="120" height="76" rx="4" fill="url(#bezel-grad)" stroke="oklch(0.78 0.012 250)" strokeWidth="0.8" />
+          <rect x="-54" y="-34" width="108" height="58" rx="2" fill="oklch(0.20 0.012 250)" />
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+            <rect key={i} x={-50 + i * 10} y="-30" width="8" height="8" rx="1" fill="oklch(0.32 0.012 250)" />
+          ))}
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+            <rect key={i} x={-50 + i * 10} y="-18" width="8" height="8" rx="1" fill="oklch(0.32 0.012 250)" />
+          ))}
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
+            <rect key={i} x={-50 + i * 10} y="-6" width="8" height="8" rx="1" fill="oklch(0.32 0.012 250)" />
+          ))}
+          <rect x="-30" y="14" width="50" height="6" rx="1" fill="oklch(0.32 0.012 250)" />
+        </g>
       </g>
 
       {/* Connection lines between elements (faint) */}
-      <g stroke="oklch(0.58 0.19 15 / 0.18)" strokeWidth="0.8" strokeDasharray="2 4" fill="none">
-        <path d="M 110 220 Q 145 200 196 240" />
-        <path d="M 790 240 Q 750 200 704 240" />
-        <path d="M 190 410 Q 250 380 280 380" />
-        <path d="M 680 420 Q 640 380 620 380" />
+      <g className="hero-conns" stroke="oklch(0.58 0.19 15 / 0.18)" strokeWidth="0.8" strokeDasharray="2 4" fill="none">
+        <path className="hero-conn" data-i="0" d="M 110 220 Q 145 200 196 240" />
+        <path className="hero-conn" data-i="1" d="M 790 240 Q 750 200 704 240" />
+        <path className="hero-conn" data-i="2" d="M 190 410 Q 250 380 280 380" />
+        <path className="hero-conn" data-i="3" d="M 680 420 Q 640 380 620 380" />
       </g>
     </svg>
 
@@ -178,8 +186,26 @@ const HeroStage = () => (
   </div>
 );
 
-const Hero = () => (
-  <section className="hero" id="hero">
+const Hero = () => {
+  const sectionRef = React.useRef(null);
+  const [booted, setBooted] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    // Boot as soon as it's even slightly visible — for top-of-page hero, fire immediately on mount
+    const boot = () => setBooted(true);
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { boot(); io.disconnect(); } });
+    }, { threshold: 0.05 });
+    io.observe(el);
+    // Also fire on next frame in case hero is already at top (initial paint)
+    const t = requestAnimationFrame(boot);
+    return () => { io.disconnect(); cancelAnimationFrame(t); };
+  }, []);
+
+  return (
+  <section ref={sectionRef} className={`hero ${booted ? 'hero-booted' : ''}`} id="hero">
     <HeroCanvas />
 
     <div className="hero-inner">
@@ -214,7 +240,8 @@ const Hero = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 const Marquee = () => {
   const items = [

@@ -359,6 +359,163 @@ body {
   }
 }
 
+/* ==========================================================================
+   Hero motion FX — gated by body classes so each behavior is independently
+   togglable from the Tweaks panel.
+   --hero-scroll: 0 (top of hero) → 1 (hero scrolled out) — set by useHeroScroll.
+   .hero-booted: added via IntersectionObserver on first hero entry.
+   ========================================================================== */
+
+/* --- Behavior 1: Boot sequence --- */
+@keyframes heroPeriphIn {
+  from { opacity: 0; transform: translate(var(--periph-from-x, 0), var(--periph-from-y, 0)) scale(0.94); }
+  to   { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+
+@keyframes heroDashDraw {
+  from { stroke-dashoffset: 240; opacity: 0; }
+  20%  { opacity: 1; }
+  to   { stroke-dashoffset: 0; opacity: 1; }
+}
+
+@keyframes heroCardIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+body.hero-fx-boot .hero .periph {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+body.hero-fx-boot .hero.hero-booted .periph {
+  animation: heroPeriphIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Stagger and per-side starting offsets */
+body.hero-fx-boot .hero .periph-mic        { --periph-from-x: -80px; --periph-from-y: 10px; }
+body.hero-fx-boot .hero .periph-speaker    { --periph-from-x: 80px;  --periph-from-y: 10px; }
+body.hero-fx-boot .hero .periph-touchpanel { --periph-from-x: -60px; --periph-from-y: 30px; }
+body.hero-fx-boot .hero .periph-laptop     { --periph-from-x: 60px;  --periph-from-y: 30px; }
+
+body.hero-fx-boot .hero.hero-booted .periph-mic        { animation-delay: 0.05s; }
+body.hero-fx-boot .hero.hero-booted .periph-speaker    { animation-delay: 0.15s; }
+body.hero-fx-boot .hero.hero-booted .periph-touchpanel { animation-delay: 0.25s; }
+body.hero-fx-boot .hero.hero-booted .periph-laptop     { animation-delay: 0.35s; }
+
+/* Connection line dash-draw */
+body.hero-fx-boot .hero .hero-conn {
+  opacity: 0;
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+}
+
+body.hero-fx-boot .hero.hero-booted .hero-conn {
+  animation: heroDashDraw 0.7s ease-out forwards;
+}
+
+body.hero-fx-boot .hero.hero-booted .hero-conn[data-i="0"] { animation-delay: 0.55s; }
+body.hero-fx-boot .hero.hero-booted .hero-conn[data-i="1"] { animation-delay: 0.65s; }
+body.hero-fx-boot .hero.hero-booted .hero-conn[data-i="2"] { animation-delay: 0.75s; }
+body.hero-fx-boot .hero.hero-booted .hero-conn[data-i="3"] { animation-delay: 0.85s; }
+
+/* Spec cards stagger */
+body.hero-fx-boot .hero .hero-spec-card {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+body.hero-fx-boot .hero.hero-booted .hero-spec-card {
+  animation: heroCardIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+body.hero-fx-boot .hero.hero-booted .hero-spec-card--tl { animation-delay: 0.7s; }
+body.hero-fx-boot .hero.hero-booted .hero-spec-card--tr { animation-delay: 0.85s; }
+body.hero-fx-boot .hero.hero-booted .hero-spec-card--br { animation-delay: 1.0s; }
+
+/* --- Behavior 2: Scroll-linked parallax ---
+   Uses the standalone `translate` CSS property (not `transform`) so it
+   composes with the boot keyframe's `transform` instead of overriding it. */
+body.hero-fx-parallax .hero-stage-svg .periph-mic {
+  translate: calc(var(--hero-scroll, 0) * -36px) 0;
+}
+
+body.hero-fx-parallax .hero-stage-svg .periph-speaker {
+  translate: calc(var(--hero-scroll, 0) * 36px) 0;
+}
+
+body.hero-fx-parallax .hero-stage-svg .periph-touchpanel {
+  translate: calc(var(--hero-scroll, 0) * -24px) calc(var(--hero-scroll, 0) * 18px);
+}
+
+body.hero-fx-parallax .hero-stage-svg .periph-laptop {
+  translate: calc(var(--hero-scroll, 0) * 24px) calc(var(--hero-scroll, 0) * 18px);
+}
+
+body.hero-fx-parallax .hero-spec-card--tl {
+  translate: 0 calc(var(--hero-scroll, 0) * -42px);
+}
+
+body.hero-fx-parallax .hero-spec-card--tr {
+  translate: 0 calc(var(--hero-scroll, 0) * -22px);
+}
+
+body.hero-fx-parallax .hero-spec-card--br {
+  translate: 0 calc(var(--hero-scroll, 0) * -56px);
+}
+
+body.hero-fx-parallax .hero-canvas svg {
+  translate: 0 calc(var(--hero-scroll, 0) * -28px);
+}
+
+/* --- Behavior 3: Display "comes online" --- */
+body.hero-fx-screen .hero .hero-led,
+body.hero-fx-screen .hero .hero-tile,
+body.hero-fx-screen .hero .hero-live {
+  opacity: 0;
+}
+
+@keyframes heroFadeIn {
+  to { opacity: var(--target-opacity, 1); }
+}
+
+body.hero-fx-screen .hero.hero-booted .hero-led {
+  --target-opacity: 1;
+  animation: heroFadeIn 0.3s ease-out 0.5s forwards;
+}
+
+body.hero-fx-screen .hero.hero-booted .hero-tile[data-i="0"] {
+  --target-opacity: 1;
+  animation: heroFadeIn 0.4s ease-out 0.7s forwards;
+}
+
+body.hero-fx-screen .hero.hero-booted .hero-tile[data-i="1"] {
+  --target-opacity: 1;
+  animation: heroFadeIn 0.4s ease-out 0.88s forwards;
+}
+
+body.hero-fx-screen .hero.hero-booted .hero-tile[data-i="2"] {
+  --target-opacity: 1;
+  animation: heroFadeIn 0.4s ease-out 1.06s forwards;
+}
+
+body.hero-fx-screen .hero.hero-booted .hero-live {
+  --target-opacity: 1;
+  animation: heroFadeIn 0.3s ease-out 1.3s forwards;
+}
+
+/* --- Behavior 4: Polish pack --- */
+body.hero-fx-polish .hero h1 {
+  letter-spacing: calc(-0.04em - var(--hero-scroll, 0) * 0.012em);
+}
+
+body.hero-fx-polish .hero {
+  opacity: calc(1 - var(--hero-scroll, 0) * 0.4);
+  filter: blur(calc(var(--hero-scroll, 0) * 4px));
+  will-change: opacity, filter;
+}
+
 .hero-eyebrow-row {
   display: flex;
   align-items: center;
