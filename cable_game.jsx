@@ -274,31 +274,67 @@ const SoundbarShape = ({ device }) => {
 const CameraShape = ({ device }) => {
   const { x, y, w, h } = device;
   const cx = x + w / 2;
-  const cy = y + h / 2;
+  const cy = y + h / 2 - 6; // shift up slightly to leave room for mount
+  const r = Math.min(w, h) / 2 - 12;
+
   return (
     <g>
+      {/* Mounting arm + bracket */}
       <rect
-        x={x} y={y}
-        width={w} height={h}
-        rx={10}
+        x={cx - 4} y={cy + r - 2}
+        width={8} height={20}
+        fill="oklch(0.85 0.012 250)"
+        stroke="oklch(0.55 0.012 250)"
+        strokeWidth="0.8"
+      />
+      <rect
+        x={cx - 22} y={cy + r + 16}
+        width={44} height={8}
+        rx={2}
+        fill="oklch(0.85 0.012 250)"
+        stroke="oklch(0.55 0.012 250)"
+        strokeWidth="0.8"
+      />
+
+      {/* Outer camera body — circular bezel */}
+      <circle
+        cx={cx} cy={cy} r={r}
         fill="oklch(0.96 0.012 50)"
         stroke="oklch(0.70 0.012 250)"
         strokeWidth="1.5"
       />
-      <rect
-        x={x + 12} y={y + 12}
-        width={w - 24} height={h - 24}
-        rx={6}
-        fill="oklch(0.20 0.012 250)"
+
+      {/* Body band — adds depth */}
+      <circle
+        cx={cx} cy={cy} r={r - 6}
+        fill="oklch(0.92 0.010 250)"
+        stroke="oklch(0.65 0.012 250)"
+        strokeWidth="0.6"
       />
-      <circle cx={cx} cy={cy} r={Math.min(w, h) * 0.25} fill="oklch(0.10 0.005 250)" />
-      <circle cx={cx} cy={cy} r={Math.min(w, h) * 0.20} fill="oklch(0.16 0.012 250)" stroke="oklch(0.40 0.012 250)" strokeWidth="1" />
-      <circle cx={cx} cy={cy} r={Math.min(w, h) * 0.10} fill="oklch(0.20 0.012 250)" />
-      <circle cx={cx - 4} cy={cy - 4} r={Math.min(w, h) * 0.04} fill="oklch(0.85 0.06 220)" opacity="0.6" />
-      <circle cx={x + w - 20} cy={y + 20} r={3} fill="oklch(0.72 0.16 145)" />
-      {[0.25, 0.5, 0.75].map((p) => (
-        <circle key={p} cx={x + w * p} cy={y + h - 18} r={1.5} fill="oklch(0.55 0.012 250)" />
-      ))}
+
+      {/* Lens housing — recessed */}
+      <circle cx={cx} cy={cy} r={r * 0.72} fill="oklch(0.18 0.012 250)" stroke="oklch(0.40 0.012 250)" strokeWidth="1" />
+      {/* Lens glass tiers */}
+      <circle cx={cx} cy={cy} r={r * 0.62} fill="oklch(0.12 0.008 250)" />
+      <circle cx={cx} cy={cy} r={r * 0.50} fill="oklch(0.20 0.012 250)" stroke="oklch(0.35 0.012 250)" strokeWidth="0.6" />
+      <circle cx={cx} cy={cy} r={r * 0.36} fill="oklch(0.10 0.005 250)" />
+      <circle cx={cx} cy={cy} r={r * 0.22} fill="oklch(0.16 0.012 250)" />
+      {/* Inner pupil + glint */}
+      <circle cx={cx} cy={cy} r={r * 0.10} fill="oklch(0.06 0.005 250)" />
+      <circle cx={cx - r * 0.20} cy={cy - r * 0.20} r={r * 0.10} fill="oklch(0.92 0.06 220)" opacity="0.45" />
+      <circle cx={cx + r * 0.25} cy={cy + r * 0.10} r={r * 0.05} fill="oklch(0.95 0.04 220)" opacity="0.30" />
+
+      {/* Recording LED on top of bezel */}
+      <circle cx={cx} cy={cy - r + 5} r={2.5} fill="oklch(0.72 0.16 145)" />
+      <circle cx={cx} cy={cy - r + 5} r={4.5} fill="oklch(0.72 0.16 145)" opacity="0.25" />
+
+      {/* Brand notch — small label area at bottom of bezel */}
+      <rect
+        x={cx - 16} y={cy + r - 14}
+        width={32} height={6}
+        rx={1.5}
+        fill="oklch(0.85 0.012 250)"
+      />
     </g>
   );
 };
